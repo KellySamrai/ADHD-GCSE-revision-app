@@ -1,0 +1,1735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0d0d1a">
+<title>GCSE Revision</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0d1a;
+  --bg2: #13132b;
+  --card: #1a1a35;
+  --card2: #21213f;
+  --border: #2d2d5e;
+  --purple: #c084fc;
+  --purple-soft: #7c3aed;
+  --pink: #f472b6;
+  --teal: #34d399;
+  --yellow: #fbbf24;
+  --orange: #fb923c;
+  --red: #f87171;
+  --blue: #60a5fa;
+  --text: #f0eeff;
+  --text2: #b8b0d4;
+  --text3: #7e77a0;
+  --glow-purple: 0 0 20px rgba(192,132,252,0.35);
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+body { font-family:'Nunito',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
+
+/* NAV */
+.nav { position:sticky; top:0; z-index:100; background:rgba(13,13,26,0.95); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); padding:0 8px; display:flex; align-items:center; justify-content:space-between; height:56px; }
+.nav-logo { font-size:1rem; font-weight:900; background:linear-gradient(135deg,var(--purple),var(--pink)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.nav-tabs { display:flex; gap:2px; background:var(--bg2); border-radius:10px; padding:3px; }
+.nav-tab { background:none; border:none; color:var(--text3); font-family:'Nunito',sans-serif; font-weight:700; font-size:0.68rem; padding:5px 7px; border-radius:7px; cursor:pointer; transition:all 0.2s; white-space:nowrap; }
+.nav-tab.active { background:var(--card2); color:var(--purple); }
+
+/* PAGES */
+.page { display:none; padding:16px; max-width:600px; margin:0 auto; position:relative; z-index:1; }
+.page.active { display:block; animation:fadeUp 0.3s ease; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+
+/* CARDS */
+.card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:16px; margin-bottom:14px; }
+.card-title { font-size:0.75rem; font-weight:800; letter-spacing:0.08em; text-transform:uppercase; color:var(--text2); margin-bottom:10px; }
+
+/* BUTTONS */
+.btn { font-family:'Nunito',sans-serif; font-weight:800; font-size:0.82rem; padding:9px 18px; border-radius:50px; border:none; cursor:pointer; transition:all 0.2s; }
+.btn-primary { background:linear-gradient(135deg,var(--purple),var(--pink)); color:white; }
+.btn-ghost { background:var(--card2); color:var(--text2); border:1px solid var(--border); }
+.btn-teal { background:var(--teal); color:#0d1f18; }
+.btn-amber { background:var(--yellow); color:#1a1200; }
+.btn-danger { background:var(--red); color:white; }
+
+/* PROGRESS BAR */
+.progress-bar-wrap { background:var(--bg2); border-radius:50px; height:6px; overflow:hidden; margin-bottom:6px; }
+.progress-bar-fill { height:100%; border-radius:50px; transition:width 0.6s ease; background:linear-gradient(90deg,var(--purple),var(--pink)); }
+
+/* STREAK DOTS */
+.streak-dots { display:flex; gap:6px; justify-content:center; padding:12px 0; }
+.streak-dot { width:30px; height:30px; border-radius:50%; border:2px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:0.55rem; font-weight:800; color:var(--text3); transition:all 0.2s; }
+.streak-dot.done { background:var(--teal); border-color:var(--teal); color:#0d1f18; }
+.streak-dot.today { border-color:var(--purple); }
+
+/* NEXT EXAM CARD */
+.next-exam-card { background:linear-gradient(135deg,#1e1040,#2d1b69); border:1px solid rgba(192,132,252,0.4); border-radius:18px; padding:18px; margin-bottom:16px; position:relative; overflow:hidden; }
+.next-label { font-size:0.65rem; font-weight:800; letter-spacing:0.1em; text-transform:uppercase; color:var(--purple); margin-bottom:4px; }
+.next-exam-row { display:flex; justify-content:space-between; align-items:center; }
+.next-exam-name { font-size:1.2rem; font-weight:900; }
+.next-exam-meta { font-size:0.8rem; color:var(--text2); margin-top:2px; }
+.next-days-big { font-family:'Space Mono',monospace; font-size:2.5rem; font-weight:700; color:var(--purple); line-height:1; }
+.next-days-label { font-size:0.65rem; color:var(--text2); font-weight:700; text-transform:uppercase; }
+
+/* SESSION ITEMS */
+.session-item { display:flex; align-items:center; gap:12px; padding:12px; background:var(--card2); border-radius:12px; margin-bottom:8px; border:1px solid var(--border); cursor:pointer; transition:all 0.2s; }
+.session-item:active { transform:scale(0.98); }
+.session-item.done { opacity:0.5; }
+.session-item.done .session-title { text-decoration:line-through; }
+.session-item.stretch { border:1px dashed rgba(251,191,36,0.5); background:rgba(251,191,36,0.04); }
+.session-check { width:26px; height:26px; border-radius:50%; border:2px solid var(--border); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:0.8rem; }
+.session-item.done .session-check { background:var(--teal); border-color:var(--teal); }
+.session-subject { font-size:0.6rem; font-weight:800; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:1px; }
+.session-title { font-size:0.85rem; font-weight:700; line-height:1.3; }
+.session-duration { font-size:0.68rem; color:var(--text3); margin-top:2px; }
+.session-badge { font-size:0.6rem; font-weight:800; padding:3px 8px; border-radius:20px; text-transform:uppercase; flex-shrink:0; }
+
+/* TIMER MODAL */
+.timer-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); z-index:200; align-items:center; justify-content:center; }
+.timer-modal.open { display:flex; }
+.timer-box { background:var(--card); border:1px solid var(--border); border-radius:24px; padding:28px 24px; text-align:center; max-width:320px; width:calc(100% - 32px); }
+.timer-subject { font-size:0.65rem; font-weight:800; letter-spacing:0.1em; text-transform:uppercase; color:var(--purple); margin-bottom:6px; }
+.timer-task { font-size:1rem; font-weight:700; margin-bottom:20px; line-height:1.4; }
+.timer-ring { width:150px; height:150px; margin:0 auto 16px; position:relative; }
+.timer-ring svg { width:100%; height:100%; transform:rotate(-90deg); }
+.timer-ring circle { fill:none; stroke-width:6; stroke-linecap:round; }
+.timer-ring .bg { stroke:var(--border); }
+.timer-ring .progress { stroke:var(--purple); transition:stroke-dashoffset 1s linear,stroke 0.3s; }
+.timer-center { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.timer-display { font-family:'Space Mono',monospace; font-size:3.2rem; font-weight:700; line-height:1; }
+.timer-phase { font-size:0.6rem; color:var(--text3); font-weight:700; margin-top:4px; }
+.timer-btn-row { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
+.timer-done-msg { display:none; text-align:center; }
+.timer-done-msg p { color:var(--text2); font-size:0.9rem; margin-bottom:16px; line-height:1.5; }
+
+/* SCIENCE SECTIONS (Why tab) */
+.why-section { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:16px; margin-bottom:12px; }
+.why-section h3 { font-size:0.95rem; font-weight:800; margin-bottom:6px; }
+.why-section p { font-size:0.85rem; color:var(--text2); line-height:1.6; }
+.pill { display:inline-block; background:rgba(192,132,252,0.2); border:1px solid rgba(192,132,252,0.4); color:#d8b4fe; font-weight:800; font-size:0.75rem; padding:1px 7px; border-radius:5px; }
+
+/* PHASE HEADERS (Plan tab) */
+.phase-header { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px 16px; margin-bottom:10px; cursor:pointer; display:flex; align-items:center; justify-content:space-between; transition:border-color 0.2s; }
+.phase-header.open { border-color:var(--purple); }
+.phase-header h3 { font-size:0.9rem; font-weight:800; }
+.phase-header p { font-size:0.72rem; color:var(--text2); margin-top:2px; }
+.phase-chevron { color:var(--text3); transition:transform 0.3s; font-size:1rem; }
+.phase-body { display:none; margin-bottom:14px; }
+.phase-body.open { display:block; }
+.week-label { font-size:0.6rem; font-weight:800; letter-spacing:0.1em; text-transform:uppercase; color:var(--text3); margin:10px 0 6px; padding-left:4px; }
+.day-row { display:flex; gap:8px; align-items:flex-start; margin-bottom:6px; padding:8px 10px; background:var(--card2); border-radius:10px; border:1px solid var(--border); }
+.day-label { font-size:0.6rem; font-weight:800; letter-spacing:0.05em; text-transform:uppercase; color:var(--text3); width:30px; flex-shrink:0; padding-top:2px; }
+.day-sessions { flex:1; }
+.day-session-pill { display:inline-block; font-size:0.72rem; font-weight:700; padding:3px 8px; border-radius:7px; margin:2px; line-height:1.3; }
+.pill-exam { background:rgba(248,113,113,0.2); color:var(--red); border:1px solid rgba(248,113,113,0.3); }
+.pill-rest { background:rgba(107,100,146,0.15); color:var(--text3); border:1px solid var(--border); }
+.pill-stretch { background:rgba(251,191,36,0.12); color:var(--yellow); border:1px solid rgba(251,191,36,0.35); font-style:italic; }
+.pill-english { background:rgba(124,58,237,0.35); color:#c4b5fd; border:1px solid rgba(124,58,237,0.5); }
+.pill-maths { background:rgba(96,165,250,0.15); color:var(--blue); border:1px solid rgba(96,165,250,0.25); }
+.pill-science { background:rgba(52,211,153,0.15); color:var(--teal); border:1px solid rgba(52,211,153,0.25); }
+.pill-pe { background:rgba(251,191,36,0.15); color:var(--yellow); border:1px solid rgba(251,191,36,0.25); }
+.pill-psych { background:rgba(244,114,182,0.15); color:var(--pink); border:1px solid rgba(244,114,182,0.25); }
+.pill-re { background:rgba(251,146,60,0.15); color:var(--orange); border:1px solid rgba(251,146,60,0.25); }
+
+/* EXAM TIMELINE */
+.exam-timeline { position:relative; }
+.exam-timeline::before { content:''; position:absolute; left:18px; top:0; bottom:0; width:2px; background:linear-gradient(to bottom,var(--purple),var(--pink),transparent); }
+.exam-entry { display:flex; gap:14px; margin-bottom:14px; padding-left:2px; }
+.exam-dot { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.9rem; flex-shrink:0; border:2px solid var(--border); background:var(--card2); z-index:1; position:relative; margin-top:2px; }
+.exam-dot.past { opacity:0.4; }
+.exam-dot.next { border-color:var(--purple); background:rgba(192,132,252,0.15); }
+.exam-dot.soon { border-color:var(--orange); }
+.exam-info { flex:1; }
+.exam-info .date { font-size:0.6rem; font-weight:800; letter-spacing:0.1em; text-transform:uppercase; color:var(--text3); }
+.exam-info .name { font-size:0.88rem; font-weight:800; line-height:1.3; }
+.exam-info .paper { font-size:0.72rem; color:var(--text2); margin-top:1px; }
+.board-badge { display:inline-block; font-size:0.55rem; font-weight:800; padding:2px 6px; border-radius:4px; letter-spacing:0.05em; text-transform:uppercase; margin-top:3px; }
+.board-aqa { background:rgba(244,114,182,0.2); color:var(--pink); }
+.board-edexcel { background:rgba(96,165,250,0.2); color:var(--blue); }
+.days-away { font-family:'Space Mono',monospace; font-size:0.7rem; font-weight:700; color:var(--text3); white-space:nowrap; padding-top:6px; }
+.days-away.hot { color:var(--red); }
+.days-away.warm { color:var(--orange); }
+.days-away.cool { color:var(--teal); }
+
+/* PAST PAPERS */
+.pp-subject { margin-bottom:10px; }
+.pp-subject-name { font-size:0.82rem; font-weight:800; margin-bottom:4px; }
+.pp-links { display:flex; gap:4px; flex-wrap:wrap; }
+.pp-link { font-size:0.68rem; font-weight:700; padding:4px 10px; border-radius:6px; background:var(--card2); border:1px solid var(--border); color:var(--text2); text-decoration:none; transition:all 0.2s; }
+.pp-link:hover { border-color:var(--purple); color:var(--purple); }
+
+/* CHECKLISTS / TOPICS */
+.subject-checklist { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:16px; margin-bottom:14px; }
+.subject-checklist h3 { font-size:0.9rem; font-weight:800; margin-bottom:8px; }
+.checklist-progress { font-size:0.68rem; color:var(--text2); margin-bottom:8px; }
+.topic-item { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04); cursor:pointer; transition:all 0.15s; }
+.topic-item:last-child { border-bottom:none; }
+.topic-item:active { opacity:0.7; }
+.topic-status { width:22px; height:22px; border-radius:5px; border:2px solid var(--border); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:0.65rem; font-weight:800; }
+.topic-status.mastered { background:var(--teal); border-color:var(--teal); color:#0d1f18; }
+.topic-status.started { background:var(--yellow); border-color:var(--yellow); color:#1a1200; }
+.topic-status.missed { background:var(--red); border-color:var(--red); color:white; }
+.topic-status.nearly { background:var(--yellow); border-color:var(--yellow); color:#1a1a00; }
+.topic-text { font-size:0.82rem; line-height:1.3; flex:1; }
+.topic-count { font-size:0.6rem; color:var(--text3); font-weight:700; white-space:nowrap; }
+
+/* QUESTION MODAL */
+.question-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); z-index:200; align-items:center; justify-content:center; overflow-y:auto; padding:16px; }
+.question-modal.open { display:flex; }
+.question-box { background:var(--card); border:1px solid var(--border); border-radius:24px; padding:24px 20px; max-width:380px; width:100%; max-height:85vh; overflow-y:auto; }
+.question-header { margin-bottom:16px; }
+.question-subject { font-size:0.6rem; font-weight:800; letter-spacing:0.1em; text-transform:uppercase; color:var(--purple); }
+.question-topic { font-size:0.82rem; font-weight:700; color:var(--text2); margin-top:2px; }
+.question-progress { font-size:0.6rem; color:var(--text3); font-weight:700; margin-top:4px; }
+.question-text { font-size:0.95rem; font-weight:700; line-height:1.5; margin-bottom:16px; }
+.question-marks { font-size:0.65rem; color:var(--text3); font-weight:700; margin-bottom:12px; }
+.question-answer { background:var(--card2); border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:14px; display:none; }
+.answer-label { font-size:0.6rem; font-weight:800; text-transform:uppercase; letter-spacing:0.1em; color:var(--teal); margin-bottom:6px; }
+.answer-text { font-size:0.85rem; color:var(--text2); line-height:1.6; }
+.self-mark { display:none; text-align:center; }
+.self-mark p { font-size:0.75rem; color:var(--text2); margin-bottom:8px; }
+.self-mark-btns { display:flex; gap:6px; justify-content:center; }
+
+/* WRITE PROMPT */
+.write-prompt { display:flex; gap:10px; align-items:flex-start; background:rgba(192,132,252,0.08); border:1px solid rgba(192,132,252,0.25); border-radius:12px; padding:12px 14px; margin-bottom:14px; }
+.write-prompt-icon { font-size:1.2rem; flex-shrink:0; margin-top:1px; }
+.write-prompt-text { font-size:0.8rem; font-weight:700; color:var(--purple); line-height:1.5; }
+
+/* CONFIDENCE GATE */
+.confidence-label { font-size:0.72rem; font-weight:800; color:var(--text2); text-align:center; margin-bottom:10px; letter-spacing:0.02em; }
+.confidence-label em { font-style:normal; color:var(--text); }
+.confidence-btns { display:flex; gap:8px; justify-content:center; margin-bottom:4px; }
+.conf-btn { flex:1; display:flex; flex-direction:column; align-items:center; gap:5px; padding:10px 6px; background:var(--card2); border:1px solid var(--border); border-radius:12px; cursor:pointer; transition:all 0.15s; }
+.conf-btn:active { transform:scale(0.96); }
+.conf-emoji { font-size:1.4rem; }
+.conf-text { font-size:0.68rem; font-weight:800; color:var(--text2); }
+.conf-sure:hover, .conf-sure:active { border-color:var(--teal); background:rgba(52,211,153,0.1); }
+.conf-sure:hover .conf-text, .conf-sure:active .conf-text { color:var(--teal); }
+.conf-unsure:hover, .conf-unsure:active { border-color:var(--yellow); background:rgba(251,191,36,0.1); }
+.conf-unsure:hover .conf-text, .conf-unsure:active .conf-text { color:var(--yellow); }
+.conf-noidea:hover, .conf-noidea:active { border-color:var(--orange); background:rgba(251,146,60,0.1); }
+.conf-noidea:hover .conf-text, .conf-noidea:active .conf-text { color:var(--orange); }
+
+/* CONFIDENCE NUDGE (post-tap, above answer) */
+.confidence-nudge { display:none; font-size:0.78rem; font-weight:700; border-left:3px solid; padding:8px 12px; border-radius:0 8px 8px 0; margin-bottom:12px; background:rgba(255,255,255,0.04); line-height:1.5; }
+
+/* IRLEN */
+.irlen-toggle-row { display:flex; align-items:center; justify-content:space-between; }
+.irlen-toggle { width:52px; height:28px; border-radius:14px; border:none; background:var(--card2); cursor:pointer; position:relative; transition:background 0.2s; }
+.irlen-toggle.active { background:var(--purple-soft); }
+.irlen-toggle::after { content:''; position:absolute; top:3px; left:3px; width:22px; height:22px; border-radius:50%; background:white; transition:transform 0.2s; }
+.irlen-toggle.active::after { transform:translateX(24px); }
+input[type=range] { -webkit-appearance:none; width:100%; height:6px; border-radius:3px; background:var(--bg2); outline:none; margin:8px 0; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:20px; height:20px; border-radius:50%; background:var(--purple); cursor:pointer; }
+
+/* BOTTOM NAV */
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(13,13,26,0.97);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-around;
+  align-items: stretch;
+  height: 62px;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.bottom-nav-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 2px;
+  transition: all 0.15s;
+  position: relative;
+}
+.bottom-nav-btn::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 20%; right: 20%;
+  height: 2px;
+  border-radius: 0 0 2px 2px;
+  background: var(--purple);
+  transform: scaleX(0);
+  transition: transform 0.2s;
+}
+.bottom-nav-btn.active::after { transform: scaleX(1); }
+.bottom-nav-emoji {
+  font-size: 1.3rem;
+  line-height: 1;
+  transition: transform 0.15s;
+}
+.bottom-nav-btn.active .bottom-nav-emoji { transform: scale(1.15); }
+.bottom-nav-label {
+  font-size: 0.58rem;
+  font-weight: 800;
+  color: var(--text3);
+  letter-spacing: 0.03em;
+  transition: color 0.15s;
+}
+.bottom-nav-btn.active .bottom-nav-label { color: var(--purple); }
+/* content padding so nothing hides behind bottom nav */
+body { padding-bottom: calc(62px + env(safe-area-inset-bottom)); }
+/* hide top nav tabs on mobile, show on larger screens */
+@media(max-width: 600px) { .nav-tabs { display: none; } }
+
+/* TOAST */
+.toast { position:fixed; bottom:80px; left:50%; transform:translateX(-50%); background:var(--card); border:1px solid var(--border); color:var(--text); font-weight:700; font-size:0.8rem; padding:8px 18px; border-radius:50px; opacity:0; transition:opacity 0.3s; z-index:400; white-space:nowrap; }
+.toast.show { opacity:1; }
+
+/* REVIEW BTN */
+.review-btn { display:inline-flex; align-items:center; gap:4px; font-size:0.72rem; font-weight:800; color:var(--orange); background:rgba(251,146,60,0.1); border:1px solid rgba(251,146,60,0.3); border-radius:8px; padding:5px 10px; cursor:pointer; margin-bottom:12px; transition:all 0.2s; }
+.review-btn:hover { background:rgba(251,146,60,0.2); }
+
+@media(max-width:400px) {
+  .nav-tab { font-size:0.62rem; padding:4px 6px; }
+}
+</style>
+</head>
+<body>
+
+<!-- IRLEN OVERLAY -->
+<div id="irlenOverlay" style="display:none;position:fixed;inset:0;pointer-events:none;z-index:150;"></div>
+
+<!-- TIMER MODAL -->
+<div class="timer-modal" id="timerModal">
+  <div class="timer-box">
+    <div id="timerContent">
+      <div class="timer-subject" id="timerSubject"></div>
+      <div class="timer-task" id="timerTask"></div>
+      <div class="timer-ring">
+        <svg viewBox="0 0 100 100">
+          <circle class="bg" cx="50" cy="50" r="44"/>
+          <circle class="progress" id="timerCircle" cx="50" cy="50" r="44" stroke-dasharray="276.46" stroke-dashoffset="0"/>
+        </svg>
+        <div class="timer-center">
+          <div class="timer-display" id="timerDisplay">20:00</div>
+          <div class="timer-phase" id="timerPhase">Ready</div>
+        </div>
+      </div>
+      <div class="timer-btn-row">
+        <button class="btn btn-primary" id="timerStartBtn" onclick="timerToggle()">Start</button>
+        <button class="btn btn-ghost" onclick="timerReset()">Reset</button>
+        <button class="btn btn-ghost" onclick="closeTimer()">Close</button>
+      </div>
+    </div>
+    <div class="timer-done-msg" id="timerDoneMsg">
+      <p>Done. Take a proper break — get up, move, get a drink. Your brain needs it.</p>
+      <div class="timer-btn-row">
+        <button class="btn btn-ghost" onclick="closeTimer()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QUESTION MODAL -->
+<div class="question-modal" id="questionModal">
+  <div class="question-box">
+    <div class="question-header">
+      <div class="question-subject" id="qSubject"></div>
+      <div class="question-topic" id="qTopic"></div>
+      <div class="question-progress" id="qProgress"></div>
+    </div>
+    <div class="question-text" id="qText"></div>
+    <div class="question-marks" id="qMarks"></div>
+    <div id="qActions">
+      <div class="write-prompt">
+        <div class="write-prompt-icon">✏️</div>
+        <div class="write-prompt-text">Write your answer first — on paper or in your head. Don't skip this. The act of trying to recall is what makes it stick.</div>
+      </div>
+      <div class="confidence-label">How confident do you feel <em>before</em> seeing the answer?</div>
+      <div class="confidence-btns">
+        <button class="conf-btn conf-sure" onclick="showAnswer('sure')">
+          <span class="conf-emoji">💪</span>
+          <span class="conf-text">Sure</span>
+        </button>
+        <button class="conf-btn conf-unsure" onclick="showAnswer('unsure')">
+          <span class="conf-emoji">🤔</span>
+          <span class="conf-text">Unsure</span>
+        </button>
+        <button class="conf-btn conf-noidea" onclick="showAnswer('noidea')">
+          <span class="conf-emoji">😬</span>
+          <span class="conf-text">No idea</span>
+        </button>
+      </div>
+    </div>
+    <div class="confidence-nudge" id="qConfidenceNudge"></div>
+    <div class="question-answer" id="qAnswer">
+      <div class="answer-label">Mark scheme</div>
+      <div class="answer-text" id="qAnswerText"></div>
+    </div>
+    <div class="self-mark" id="qSelfMark">
+      <p>How did you do?</p>
+      <div class="self-mark-btns">
+        <button class="btn btn-teal" onclick="selfMark('got')">Got it ✓</button>
+        <button class="btn btn-amber" onclick="selfMark('nearly')">Nearly</button>
+        <button class="btn btn-danger" onclick="selfMark('missed')">Missed it</button>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:12px">
+      <button class="btn btn-ghost" onclick="closeQuestions()">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">GCSEs</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('today',event)">Today</button>
+    <button class="nav-tab" onclick="showPage('topics',event)">Practice</button>
+    <button class="nav-tab" onclick="showPage('exams',event)">Exams</button>
+    <button class="nav-tab" onclick="showPage('plan',event)">Plan</button>
+    <button class="nav-tab" onclick="showPage('irlen',event)">Irlen</button>
+    <button class="nav-tab" onclick="showPage('why',event)">Why</button>
+  </div>
+</nav>
+
+<!-- ═══ WHY PAGE ═══ -->
+<div class="page" id="page-why">
+  <div style="padding:12px 0 8px">
+    <h2 style="font-size:1.2rem;font-weight:900;margin-bottom:4px;">Why this works</h2>
+    <p style="font-size:0.82rem;color:var(--text2);">The actual neuroscience — not a lecture.</p>
+  </div>
+
+  <div class="why-section" style="border-left:3px solid var(--purple)">
+    <h3 style="color:var(--purple)">⏱ Time blindness</h3>
+    <p>Your brain sorts time into two buckets: <span class="pill">NOW</span> and <span class="pill">NOT NOW</span>. "Revise at 5pm" doesn't feel real until it's already gone. This is neurological — the ADHD brain has reduced dopamine in the prefrontal cortex, which is the part that makes future time feel tangible.</p>
+    <p style="margin-top:8px;color:var(--text)">→ Every session here is 20 minutes with a visible countdown. The timer makes time visible and concrete — your brain can work with that. It's short enough that starting doesn't feel impossible.</p>
+  </div>
+
+  <div class="why-section" style="border-left:3px solid var(--pink)">
+    <h3 style="color:var(--pink)">🔥 Interest-driven brain</h3>
+    <p>The ADHD brain runs on a different motivation system. Neurotypical brains can push through boring tasks using willpower. The ADHD brain needs interest, urgency, challenge, or novelty to engage the dopamine system — without those, it literally cannot sustain focus. That's not laziness. That's how your brain is wired.</p>
+    <p style="margin-top:8px;color:var(--text)">→ This plan uses videos, questions, drawing, and colour instead of textbooks. Subjects you care about are scheduled first to build momentum into harder ones. Each session is different to create novelty.</p>
+  </div>
+
+  <div class="why-section" style="border-left:3px solid var(--teal)">
+    <h3 style="color:var(--teal)">🧪 What actually works for revision</h3>
+    <p>Most people revise wrong. Re-reading notes and highlighting feel productive but research shows only around 10% actually sticks. The ADHD brain especially struggles to encode passive reading because there's no dopamine reward from it.</p>
+    <p style="margin-top:8px;color:var(--text)">→ Every topic in this app has practice questions. Testing yourself is 4–5× more effective than re-reading (retrieval practice). Spacing revision over weeks beats cramming. Explaining things out loud beats reading in silence.</p>
+  </div>
+
+  <div class="why-section" style="border-left:3px solid var(--orange)">
+    <h3 style="color:var(--orange)">📐 Why 20 minutes?</h3>
+    <p>Research on ADHD attention shows that sustained focus typically peaks around 15–20 minutes before degrading. A Pomodoro-style structure with a defined endpoint also reduces the cognitive cost of starting — "just 20 minutes" is less threatening than "revise for an hour".</p>
+    <p style="margin-top:8px;color:var(--text)">→ After each session, take at least 5 minutes away from the screen. Walk, get water, do nothing. This is when the brain consolidates what it just learned.</p>
+  </div>
+
+  <div class="card" style="text-align:center;padding:18px">
+    <div style="font-weight:900;font-size:1rem;margin-bottom:4px">The target</div>
+    <div style="color:var(--text2);font-size:0.85rem;line-height:1.6">A grade 4 is a standard pass. A grade 5 is the maximum on Foundation papers (Maths and Science). This plan is built around reaching those targets — not around being perfect, and not around revising in ways that don't work.</div>
+  </div>
+</div>
+
+<!-- ═══ TODAY PAGE ═══ -->
+<div class="page active" id="page-today">
+  <div style="padding:12px 0 4px">
+    <h2 style="font-size:1.2rem;font-weight:900">Right then —</h2>
+  </div>
+  <div class="next-exam-card" id="nextExamCard">
+    <div class="next-label">Next exam</div>
+    <div class="next-exam-row">
+      <div><div class="next-exam-name" id="nextExamName">—</div><div class="next-exam-meta" id="nextExamMeta">—</div></div>
+      <div style="text-align:right"><div class="next-days-big" id="nextDaysBig">—</div><div class="next-days-label">days</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">This week</div>
+    <div class="streak-dots" id="streakDots"></div>
+  </div>
+  <div class="card">
+    <div class="card-title" id="todayHeader">Today's sessions</div>
+    <div id="todaySessions"></div>
+    <div style="text-align:center;margin-top:10px">
+      <div id="todayProgress" style="font-size:0.68rem;color:var(--text2);margin-bottom:4px;"></div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" id="todayProgressBar" style="width:0%"></div></div>
+    </div>
+  </div>
+  <div style="font-size:0.75rem;color:var(--text3);text-align:center;padding:8px;line-height:1.5">20 minutes. Timer running. That's it — just get started.</div>
+
+  <div class="card" style="margin-top:8px">
+    <div class="card-title">Back up your progress</div>
+    <p style="font-size:0.78rem;color:var(--text2);line-height:1.6;margin-bottom:12px">Your streak, answers and progress are saved on this device. Back up regularly so nothing gets lost if you clear your browser or switch devices.</p>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-ghost" style="flex:1;font-size:0.75rem" onclick="exportProgress()">⬇ Back up</button>
+      <button class="btn btn-ghost" style="flex:1;font-size:0.75rem" onclick="importProgress()">⬆ Restore</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ PLAN PAGE ═══ -->
+<div class="page" id="page-plan">
+  <div style="padding:12px 0 8px">
+    <h2 style="font-size:1.2rem;font-weight:900;margin-bottom:4px;">Your revision plan</h2>
+    <p style="font-size:0.82rem;color:var(--text2);">Tap a phase to expand. 20-minute sessions only. Exams start 5 May 2026.</p>
+  </div>
+  <div id="timetableContent"></div>
+</div>
+
+<!-- ═══ EXAMS PAGE ═══ -->
+<div class="page" id="page-exams">
+  <div style="padding:12px 0 8px">
+    <h2 style="font-size:1.2rem;font-weight:900;margin-bottom:4px;">What's coming up</h2>
+    <p style="font-size:0.82rem;color:var(--text2);">All your exams, with past papers.</p>
+  </div>
+  <div id="pastPapersSection"></div>
+  <div class="exam-timeline" id="examTimeline"></div>
+</div>
+
+<!-- ═══ TOPICS PAGE ═══ -->
+<div class="page" id="page-topics">
+  <div style="padding:12px 0 8px">
+    <h2 style="font-size:1.2rem;font-weight:900;margin-bottom:4px;">What have you covered?</h2>
+    <p style="font-size:0.82rem;color:var(--text2);">Tap a topic to test yourself. Watch the bars fill up.</p>
+  </div>
+  <div id="reviewFlaggedWrap"></div>
+  <div id="checklistContent"></div>
+</div>
+
+<!-- ═══ IRLEN PAGE ═══ -->
+<div class="page" id="page-irlen">
+  <div style="padding:12px 0 8px">
+    <h2 style="font-size:1.2rem;font-weight:900;margin-bottom:4px;">Irlen</h2>
+    <p style="font-size:0.82rem;color:var(--text2);">Purple overlay and reading tips.</p>
+  </div>
+  <div class="card">
+    <div class="card-title">Overlay</div>
+    <div class="irlen-toggle-row">
+      <span style="font-size:0.88rem;font-weight:700">Purple screen overlay</span>
+      <button id="irlenToggle" class="irlen-toggle" onclick="toggleIrlen()"></button>
+    </div>
+    <div id="irlenSliderWrap" style="display:none;margin-top:14px">
+      <label style="font-size:0.75rem;color:var(--text2);font-weight:700">Intensity</label>
+      <input type="range" id="irlenIntensity" min="5" max="40" value="15" oninput="updateIrlenIntensity(this.value)">
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">What is Irlen Syndrome?</div>
+    <p style="font-size:0.85rem;color:var(--text2);line-height:1.7">Some people's brains process light differently. White pages, bright screens, and certain lighting can make text look like it's moving, blurring, or swimming. It's not your eyes — it's how your brain handles what your eyes send it. A coloured overlay filters out the wavelengths that cause the problem. It won't fix everything, but it can make reading less tiring.</p>
+  </div>
+  <div class="card">
+    <div class="card-title">Tips for reading off-screen</div>
+    <ul style="font-size:0.85rem;color:var(--text2);line-height:1.8;padding-left:18px">
+      <li>Use a coloured overlay sheet on paper — purple or blue usually works best</li>
+      <li>Try a reading ruler to isolate one line at a time</li>
+      <li>Avoid pure white paper. Cream or pastel-coloured paper is easier</li>
+      <li>Increase font size and line spacing on any digital text you can control</li>
+      <li>Avoid fluorescent lighting when possible — daylight or warm lamps are better</li>
+      <li>Take a break every 15–20 minutes when reading on paper</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  DATA — Exam dates corrected to 2026 from timetable
+// ═══════════════════════════════════════════════════════
+
+const EXAMS = [
+  { date:"2026-05-07", label:"Thu 7 May AM", name:"Psychology", board:"AQA", paper:"Cognition & Behaviour – Paper 1 (8182/01)", emoji:"🧠" },
+  { date:"2026-05-11", label:"Mon 11 May AM", name:"English Lit", board:"Edexcel", paper:"Poetry Anthology", emoji:"📖" },
+  { date:"2026-05-12", label:"Tue 12 May AM", name:"RE", board:"AQA", paper:"Christianity & Islam", emoji:"✝️" },
+  { date:"2026-05-12", label:"Tue 12 May PM", name:"Biology", board:"AQA", paper:"Foundation Paper 1", emoji:"🔬" },
+  { date:"2026-05-14", label:"Thu 14 May AM", name:"Maths", board:"Edexcel", paper:"Non-Calculator (Foundation)", emoji:"🔢" },
+  { date:"2026-05-14", label:"Thu 14 May PM", name:"Psychology", board:"AQA", paper:"Social Context – Paper 2 (8182/02)", emoji:"🧠" },
+  { date:"2026-05-21", label:"Thu 21 May AM", name:"Chemistry", board:"AQA", paper:"Foundation Paper 1", emoji:"⚗️" },
+  { date:"2026-05-22", label:"Fri 22 May AM", name:"English Language", board:"Edexcel", paper:"Paper 1", emoji:"📝" },
+  { date:"2026-05-22", label:"Fri 22 May PM", name:"PE", board:"Edexcel", paper:"Fitness & Body Systems", emoji:"🏃" },
+  { date:"2026-06-01", label:"Mon 1 June AM", name:"PE", board:"Edexcel", paper:"Health & Performance", emoji:"🏃" },
+  { date:"2026-06-02", label:"Tue 2 June AM", name:"Physics", board:"AQA", paper:"Foundation Paper 1", emoji:"⚡" },
+  { date:"2026-06-03", label:"Wed 3 June AM", name:"Maths", board:"Edexcel", paper:"Calculator Paper 2 (Foundation)", emoji:"🔢" },
+  { date:"2026-06-08", label:"Mon 8 June AM", name:"Biology", board:"AQA", paper:"Foundation Paper 2", emoji:"🔬" },
+  { date:"2026-06-10", label:"Wed 10 June AM", name:"Maths", board:"Edexcel", paper:"Calculator Paper 3 (Foundation)", emoji:"🔢" },
+  { date:"2026-06-12", label:"Fri 12 June AM", name:"Chemistry", board:"AQA", paper:"Foundation Paper 2", emoji:"⚗️" },
+  { date:"2026-06-15", label:"Mon 15 June AM", name:"Physics", board:"AQA", paper:"Foundation Paper 2", emoji:"⚡" },
+];
+
+const PAST_PAPERS = [
+  { subject:"Biology", board:"AQA", url:"https://www.aqa.org.uk/subjects/biology/gcse/biology-8461/assessment-resources", color:"var(--teal)" },
+  { subject:"Chemistry", board:"AQA", url:"https://www.aqa.org.uk/subjects/chemistry/gcse/chemistry-8462/assessment-resources", color:"var(--yellow)" },
+  { subject:"Physics", board:"AQA", url:"https://www.aqa.org.uk/subjects/physics/gcse/physics-8463/assessment-resources", color:"var(--pink)" },
+  { subject:"Psychology", board:"AQA", url:"https://www.aqa.org.uk/subjects/psychology/gcse/psychology-8182/assessment-resources", color:"var(--pink)" },
+  { subject:"RE", board:"AQA", url:"https://www.aqa.org.uk/subjects/religious-studies/gcse/religious-studies-8062/assessment-resources", color:"var(--orange)" },
+  { subject:"English Language", board:"Edexcel", url:"https://qualifications.pearson.com/en/qualifications/edexcel-gcses/english-language-2015.coursematerials.html", color:"var(--purple)" },
+  { subject:"English Literature", board:"Edexcel", url:"https://qualifications.pearson.com/en/qualifications/edexcel-gcses/english-literature-2015.coursematerials.html", color:"var(--purple)" },
+  { subject:"Maths", board:"Edexcel", url:"https://qualifications.pearson.com/en/qualifications/edexcel-gcses/mathematics-2015.coursematerials.html", color:"var(--blue)" },
+  { subject:"PE", board:"Edexcel", url:"https://qualifications.pearson.com/en/qualifications/edexcel-gcses/physical-education-2016.coursematerials.html", color:"var(--teal)" },
+];
+
+const CHECKLISTS = [
+  {
+    subject:"English Language", board:"Edexcel", color:"var(--purple)",
+    topics:["Reading comprehension — explicit and implicit","Language analysis","Structural analysis","Evaluation and comparison","Transactional writing — format, tone, purpose","Descriptive and narrative writing","Viewpoint writing"]
+  },
+  {
+    subject:"English Literature", board:"Edexcel", color:"var(--purple)",
+    topics:["Poetry anthology — named poems","Unseen poetry comparison","Prose set text analysis","Drama set text analysis","Context and theme questions"]
+  },
+  {
+    subject:"Maths (Foundation)", board:"Edexcel", color:"var(--blue)",
+    topics:["Number","Algebra","Ratio, proportion and rates of change","Geometry and measures","Probability","Statistics"]
+  },
+  {
+    subject:"Biology (Foundation)", board:"AQA", color:"var(--teal)",
+    topics:["Cell structure and transport","Organisation","Infection and response","Bioenergetics","Homeostasis and response","Inheritance, variation and evolution","Ecology"]
+  },
+  {
+    subject:"Chemistry (Foundation)", board:"AQA", color:"var(--yellow)",
+    topics:["Atomic structure and the periodic table","Bonding, structure and properties","Quantitative chemistry","Chemical changes","Energy changes","The rate and extent of chemical change","Organic chemistry","Chemical analysis","Chemistry of the atmosphere","Using resources"]
+  },
+  {
+    subject:"Physics (Foundation)", board:"AQA", color:"var(--pink)",
+    topics:["Energy","Electricity","Particle model of matter","Atomic structure","Forces","Waves","Magnetism and electromagnetism"]
+  },
+  {
+    subject:"Psychology", board:"AQA", color:"var(--pink)",
+    topics:["Cognition and development","Social influence","Memory","Perception","Development","Research methods"]
+  },
+  {
+    subject:"RE", board:"AQA", color:"var(--orange)",
+    topics:["Christian beliefs and teachings","Christian practices","Muslim beliefs and teachings","Muslim practices","Religion and life","Religion, peace and conflict","Religion, crime and punishment","Religion, human rights and social justice"]
+  },
+  {
+    subject:"PE", board:"Edexcel", color:"var(--teal)",
+    topics:["Applied anatomy and physiology","Movement analysis","Physical training","Sports psychology","Socio-cultural influences","Health, fitness and wellbeing","Performance and participation"]
+  }
+];
+
+// ═══════════════════════════════════════════════════════
+//  PHASES — rebuilt around actual 2026 exam sequence
+//  Phase 1: Now → 19 Apr  (build routine, all subjects)
+//  Phase 2: 20 Apr → 4 May (heat up, subject-by-exam-order)
+//  Phase 3: 5 May → 15 Jun (exam by exam, retrieval only)
+// ═══════════════════════════════════════════════════════
+
+const PHASES = [
+  {
+    id:"phase1", label:"Phase 1 — Build the Habit", period:"Now to 19 April",
+    desc:"2 sessions weekdays, up to 3 at weekends. Each week is different — all 9 subjects rotate so nothing gets ignored.",
+    color:"var(--teal)",
+    weeks:[
+      { label:"Week 1 (Mar 2–8) — First contact with every subject",
+        days:{
+          Mon:[["Psych","Cognition basics — watch one short video, write 3 key terms"],["English Lang","Reading comprehension — explicit vs implicit, Seneca quiz"]],
+          Tue:[["Maths","Number — place value, rounding, Corbettmaths video + 5 questions"],["Biology","Cell structure — Cognito video, label a diagram"]],
+          Wed:[["RE","Christianity key beliefs — mind map from memory"],["Chemistry","Atomic structure — Cognito video, 3 key facts"]],
+          Thu:[["English Lit","Pick one Power & Conflict poem. Read twice. Annotate."],["Physics","Energy stores — list all 8 from memory, check"]],
+          Fri:[["PE","Body systems overview — sketch the cardiovascular system from memory"],["Maths","Fractions — 5 Corbettmaths questions"]],
+          Sat:[["English Lang","Language technique practice — find simile, metaphor, personification in any text"],["RE","Spider diagram: what do you already know about Islam?"],["⭐ Stretch","Write 3 sentences explaining your chosen poem to a friend"]],
+          Sun:[["Biology","5 flashcards — cell biology key terms"],["Psych","Draw the Multi-Store Model of memory from memory"]]
+        }
+      },
+      { label:"Week 2 (Mar 9–15) — Go deeper on last week's topics",
+        days:{
+          Mon:[["English Lit","Same poem from week 1 — now write 3 analytical sentences about it"],["Maths","Algebra — simplify expressions, Corbettmaths"]],
+          Tue:[["Chemistry","Bonding — ionic vs covalent, Seneca quiz"],["PE","Muscular system — label diagram of major muscles"]],
+          Wed:[["Psych","Social influence — conformity, watch one video"],["RE","Islam key beliefs — 5 flashcards from Aqeedah"]],
+          Thu:[["Biology","Organisation — digestive system, colour-code diagram"],["English Lang","Structural analysis — what does the writer do at start/middle/end?"]],
+          Fri:[["Physics","Electricity — draw a series and parallel circuit from memory"],["Maths","Ratio and proportion — 5 questions"]],
+          Sat:[["English Lit","Annotate a second poem — circle 3 techniques, explain each"],["Chemistry","Atomic structure retrieval quiz in the app"],["⭐ Stretch","Colour-coded mind map: periodic table groups 1, 7 and 0"]],
+          Sun:[["RE","Christianity practices — key quotes, write 2 from memory"],["Psych","Memory retrieval quiz in the app — first topic"]]
+        }
+      },
+      { label:"Week 3 (Mar 16–22) — New topics, keep rotating",
+        days:{
+          Mon:[["Maths","Number — percentages, fractions, decimals mixed practice"],["Biology","Infection and response — what is a pathogen? Cognito video"]],
+          Tue:[["English Lit","Power & Conflict — watch a comparison video, pick a second poem"],["Physics","Forces — what is a resultant force? Quick sketch + label"]],
+          Wed:[["RE","Islam practices — Five Pillars, flashcards + Seneca quiz"],["Chemistry","Energy changes — exo vs endo, Cognito video"]],
+          Thu:[["Psych","Perception — Gregory vs Gibson, watch a video"],["English Lang","Transactional writing — what format suits what purpose? Make a table"]],
+          Fri:[["PE","Health and fitness — components of fitness, draw and label"],["Maths","Geometry — area of triangles and circles, 5 questions"]],
+          Sat:[["Biology","Infection and response — vaccination retrieval quiz in app"],["English Lit","Compare two poems side by side — one similarity, one difference"],["⭐ Stretch","Record a voice memo explaining how vaccination works"]],
+          Sun:[["Physics","Forces — Newton's laws, write each one out in plain English"],["RE","Religion & life — key beliefs, 3 bullet points"]]
+        }
+      },
+      { label:"Week 4 (Mar 23–29) — Retrieval week: test yourself on weeks 1–3",
+        days:{
+          Mon:[["Psych","Cognition and memory — retrieval quiz in app, no notes"],["Maths","Algebra — solve equations, sequences, nth term"]],
+          Tue:[["Chemistry","Atomic structure + bonding — retrieval quiz in app"],["PE","Body systems — explain the cardiovascular system out loud, no notes"]],
+          Wed:[["English Lit","Poetry — write key quote for each poem you've studied so far"],["Biology","Cells + organisation — retrieval quiz in app"]],
+          Thu:[["RE","Christian and Muslim beliefs — write 3 key beliefs for each from memory"],["Physics","Energy + electricity — retrieval quiz in app"]],
+          Fri:[["English Lang","Descriptive writing — write one opening paragraph: 'The Empty Room'"],["Maths","Statistics — mean, median, mode, range — 5 questions"]],
+          Sat:[["Psych","Social influence — Milgram study, write the key findings from memory"],["English Lit","Unseen poem: read, annotate, write 2 analysis sentences"],["⭐ Stretch","Compare unseen poem to one you know — one similarity in theme"]],
+          Sun:[["Biology","Infection — draw the vaccination immune response from memory"],["Chemistry","Chemical changes — reactivity series, write it out"]]
+        }
+      },
+      { label:"Week 5 (Mar 30–Apr 5) — Push into harder topics",
+        days:{
+          Mon:[["Biology","Bioenergetics — photosynthesis word equation from memory, then Cognito video"],["English Lang","Viewpoint writing — read an opinion article, identify 3 techniques"]],
+          Tue:[["Maths","Probability — basic rules, tree diagrams, 5 questions"],["Psych","Development — Piaget's stages, draw a table from memory"]],
+          Wed:[["Physics","Particle model + atomic structure — Cognito video"],["RE","Religion, peace and conflict — key terms mind map"]],
+          Thu:[["Chemistry","Rate of reaction — collision theory, Cognito video"],["English Lit","Power & Conflict poem 3 — annotate, add to your comparison notes"]],
+          Fri:[["PE","Training methods — interval vs continuous, pros/cons table"],["Maths","Ratio — best value problems, proportion"]],
+          Sat:[["Psych","Research methods — what is a hypothesis? Write one for each topic you've studied"],["Biology","Homeostasis — what does the body regulate? List 3 examples"],["⭐ Stretch","Explain negative feedback to someone using a thermostat analogy"]],
+          Sun:[["RE","Religion and crime — key beliefs, 3 bullet points"],["Physics","Waves — transverse vs longitudinal, draw and label"]]
+        }
+      },
+      { label:"Week 6 (Apr 6–19) — Final Phase 1 push before heat-up",
+        days:{
+          Mon:[["Psych","Social Context preview — what topics are in Paper 2? Write a list"],["English Lit","Full poetry comparison — timed 25 minutes, then mark against criteria"]],
+          Tue:[["Maths","Past paper — Foundation non-calc questions 1–10, check marks"],["Biology","Ecology — food chains, energy transfer, key terms"]],
+          Wed:[["RE","Religion and human rights — key beliefs retrieval quiz in app"],["Chemistry","Organic chemistry intro — alkanes vs alkenes, Cognito video"]],
+          Thu:[["Physics","Magnetism — draw field lines around a bar magnet from memory"],["English Lang","Past paper extract — read and answer Q1 (list 4 things)"]],
+          Fri:[["PE","Sports psychology — motivation and mental rehearsal, Quizlet"],["Maths","Geometry — Pythagoras, area, volume — 5 questions"]],
+          Sat:[["Biology","Inheritance — dominant vs recessive, Punnett square practice"],["Psych","Full retrieval pass — one question per topic across all 6 topics"],["⭐ Stretch","Write a 5-minute summary of everything you know about Psychology so far"]],
+          Sun:[["Chemistry","Using resources — Haber process, key conditions from memory"],["RE","Religion and social justice — final Phase 1 retrieval quiz in app"]]
+        }
+      }
+    ]
+  },
+  {
+    id:"phase2", label:"Phase 2 — Turn Up the Heat", period:"20 April to 6 May",
+    desc:"2–3 sessions per day. Subject order follows exam sequence. Past paper questions start. Interleave subjects daily.",
+    color:"var(--orange)",
+    weeks:[
+      { label:"Week 1 (20–26 Apr) — Psych & Eng Lit focus",
+        days:{
+          Mon:[["Psych","Full retrieval — all Cognition & Behaviour topics"],["English Lit","Poetry anthology — review all named poems"],["Maths","Non-calc mixed questions — 10"]],
+          Tue:[["Psych","Practice 6-mark and 10-mark answers — use mark scheme"],["RE","Key quotes flashcard review — Christianity & Islam"],["Biology","Paper 1 topics — Seneca test"]],
+          Wed:[["English Lit","Timed comparison question — 30 mins"],["Psych","Wider cognition — video + retrieval quiz"],["Chemistry","Bonding — write differences from memory"]],
+          Thu:[["Psych","Final Cognition review — key studies, key findings"],["Maths","Check weak spots — Corbettmaths"],["English Lit","Unseen poetry — practice with a new poem"]],
+          Fri:[["RE","Past paper practice questions — 20 min"],["English Lit","Final poem read-through — annotate key 3 poems"]],
+          Sat:[["Psych","Paper 1 full retrieval — timed 45 min"],["English Lit","Key quotes for each poem — write from memory"]],
+          Sun:[["Rest","Rest. Recovery is not wasted time — your brain consolidates during sleep."]]
+        }
+      },
+      { label:"Week 2 (27 Apr–6 May) — RE, Bio, Maths pre-prep + final Psych",
+        days:{
+          Mon:[["RE","Christianity — beliefs + practices retrieval quiz in app"],["Psych","Social Context (Paper 2) — watch video, 5 key points"],["Maths","Non-calc past paper — Foundation, timed 45 min"]],
+          Tue:[["Biology","Cell biology + organisation — retrieval quiz in app"],["RE","Islam — past paper questions, 20 min"],["Maths","Algebra, equations, sequences — 10 questions"]],
+          Wed:[["Psych","Social Context (Paper 2) — key studies review"],["Biology","Infection & response — Seneca quiz"],["RE","Religion & life — flashcards from memory"]],
+          Thu:[["Biology","Bioenergetics — photosynthesis equation from memory"],["Maths","Ratio, proportion — 10 timed questions"],["Psych","Paper 2 (Social Context) practice — one 6-mark answer"]],
+          Fri:[["Biology","Paper 1 topics — full retrieval pass"],["RE","Key quotes — write 3 from memory per religion"]],
+          Sat:[["Maths","Non-calc past paper — timed, Foundation"],["Biology","5 key diagrams — draw and label from memory"]],
+          Sun:[["Rest","Light review only. Skim flashcards. Rest is revision too."]]
+        }
+      },
+      { label:"Week 3 (4–6 May) — Final 3 days before first exam",
+        days:{
+          Mon:[["Psych","Full retrieval — all Paper 1 topics (Cognition & Behaviour), no notes"],["English Lit","Read over key poems one final time"]],
+          Tue:[["Psych","Paper 1 final retrieval — Cognition & Behaviour key studies, write from memory"],["RE","Key quotes — 2 per topic, write without looking"]],
+          Wed:[["Psych","Skim notes only — no new learning. Rest early."],["Rest","Exam is tomorrow. Sleep matters more than one more hour."]]
+        }
+      }
+    ]
+  },
+  {
+    id:"phase3", label:"Phase 3 — Exam by Exam", period:"7 May to 15 June",
+    desc:"Revise only for the next exam. Max 2 sessions per day. Retrieval practice only — no new content. Your brain needs sleep more than late-night cramming.",
+    color:"var(--red)",
+    weeks:[
+      { label:"7–10 May — Psych Paper 1 (7 May) then bridge to Eng Lit (11 May)",
+        days:{
+          Thu:[["EXAM","Psychology Paper 1 — Cognition & Behaviour (8182/01)"],["Psych","Evening: 20 mins light review Paper 2 Social Context topics only — then stop"]],
+          Fri:[["Psych","Paper 2 Social Context — key studies retrieval, 20 mins"],["English Lit","1 poem read-through — annotate from memory, no new notes"]],
+          Sat:[["English Lit","Key poem quotes — write from memory"],["Psych","Paper 2 Social Context — watch one short video"]],
+          Sun:[["English Lit","Final skim of all named poems — look only, don't rewrite"]],
+        }
+      },
+      { label:"11–13 May — After Eng Lit, prep for RE + Bio (12 May)",
+        days:{
+          Mon:[["EXAM","English Lit — Poetry Anthology"],["RE","Evening: Christianity key beliefs retrieval"]],
+          Tue:[["EXAM","RE AM — Christianity & Islam"],["EXAM","Biology PM — Foundation Paper 1"],["Maths","Evening: 10 non-calc warm-up questions — stay sharp"]],
+          Wed:[["Maths","Non-calc past paper — Foundation, timed"],["Psych","Paper 2 — Social Context, key studies"]],
+        }
+      },
+      { label:"14–20 May — Maths (14 May AM) + Psych Paper 2 (14 May PM) then Chem (21 May)",
+        days:{
+          Thu:[["EXAM","Maths Non-Calc AM"],["EXAM","Psychology Paper 2 — Social Context PM"],["Chemistry","Evening: atomic structure light review"]],
+          Fri:[["Chemistry","Bonding + energy changes — retrieval quiz in app"],["Rest","Early night"]],
+          Sat:[["Chemistry","Past paper Paper 1 questions — 20 mins"],["Rest","Rest"]],
+          Sun:[["Chemistry","Final retrieval — key reactions and equations"]],
+          Mon:[["EXAM","Chemistry Foundation Paper 1"],["English Lang","Evening: read Paper 1 structure guide"]],
+          Tue:[["English Lang","Paper 1 reading skills — past paper extract"],["PE","Body systems diagram — draw from memory"]],
+          Wed:[["English Lang","Transactional writing practice — timed 20 mins"],["PE","Components of fitness flashcards"]],
+        }
+      },
+      { label:"22–31 May — Eng Lang (22) + PE (22) then half term",
+        days:{
+          Thu:[["EXAM","English Language Paper 1"],["EXAM","PE — Fitness & Body Systems"],["Rest","You've just done two exams. Rest."]],
+          Fri:[["PE","Health & Performance — Quizlet review"],["Rest","Half term starts. Protect your sleep."]],
+          Sat:[["PE","Health & Performance — retrieval quiz in app"]],
+          Sun:[["Rest","Rest"]],
+          Mon:[["PE","Paper 2 final flashcards"],["Physics","Topic overview — Cognito video"]],
+          Tue:[["PE","Paper 2 last retrieval — 10 questions"],["Physics","Retrieval quiz — 10 questions in app"]],
+          Wed:[["Rest","Rest day"]],
+          Thu:[["Rest","Rest day"]],
+          Fri:[["Rest","Last day of half term rest"]],
+        }
+      },
+      { label:"1–7 June — PE P2 (1 Jun) + Physics P1 (2 Jun) + Maths P2 (3 Jun)",
+        days:{
+          Mon:[["EXAM","PE — Health & Performance"],["Physics","Evening: electricity and energy retrieval"]],
+          Tue:[["EXAM","Physics Foundation Paper 1"],["Maths","Evening: calculator skills — fractions, percentages"]],
+          Wed:[["EXAM","Maths Calculator Paper 2"],["Biology","Ecology + genetics — Cognito video"]],
+          Thu:[["Biology","Past paper Paper 2 questions — 20 mins"],["Maths","Paper 3 warm-up — 10 questions"]],
+          Fri:[["Biology","Final Paper 2 retrieval — homeostasis, inheritance, ecology"],["Rest","Rest"]],
+          Sat:[["Maths","Paper 3 Foundation past paper — timed"]],
+          Sun:[["Biology","Skim key diagrams — inheritance, food chains, kidneys"]],
+        }
+      },
+      { label:"8–15 June — Bio P2 (8) + Maths P3 (10) + Chem P2 (12) + Physics P2 (15)",
+        days:{
+          Mon:[["EXAM","Biology Foundation Paper 2"],["Chemistry","Paper 2: organic chemistry + rates — Cognito"]],
+          Tue:[["Chemistry","Retrieval quiz — Paper 2 topics"],["Maths","Final calc review — weak topics only"]],
+          Wed:[["EXAM","Maths Calculator Paper 3"],["Chemistry","Past paper Paper 2 questions"]],
+          Thu:[["Chemistry","Final retrieval — equations and key reactions"],["Physics","Retrieval — 10 questions in app"]],
+          Fri:[["EXAM","Chemistry Foundation Paper 2"],["Physics","Key equations — write out ×5 from memory"]],
+          Sat:[["Physics","Final retrieval — equations and diagrams"]],
+          Sun:[["Rest","Rest. Last exam tomorrow. Sleep matters more than one more hour of notes."]],
+        }
+      }
+    ]
+  }
+];
+
+// ═══════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+//  STATE — localStorage only
+// ═══════════════════════════════════════════════════════
+const STORAGE_KEY = 'gcse_state_v3';
+
+function stateDefaults(s) {
+  if (!s.doneSessions)    s.doneSessions = {};
+  if (!s.checkedTopics)   s.checkedTopics = {};
+  if (!s.questionResults) s.questionResults = {};
+  if (!s.confidence)      s.confidence = {};
+  if (!s.streak)          s.streak = 0;
+  if (!s.lastDate)        s.lastDate = null;
+  if (!s.totalSessions)   s.totalSessions = 0;
+  if (s.irlenOn === undefined) s.irlenOn = false;
+  if (!s.irlenIntensity)  s.irlenIntensity = 15;
+  s.version = 3;
+  return s;
+}
+
+let state = stateDefaults(JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'));
+
+function saveState() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+// ── Export / Import ──────────────────────────────────────
+function exportProgress() {
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'gcse-progress-backup.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Progress backed up ✓');
+}
+
+function importProgress() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json,application/json';
+  input.onchange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      const text = await file.text();
+      const imported = JSON.parse(text);
+      if (!imported.version) throw new Error('Not a valid backup file');
+      state = stateDefaults(imported);
+      saveState();
+      buildHome();
+      buildChecklists();
+      applyIrlen();
+      showToast('Progress restored ✓');
+    } catch(err) {
+      showToast('Could not read backup file');
+    }
+  };
+  input.click();
+}
+
+// ═══════════════════════════════════════════════════════
+//  UTILS
+// ═══════════════════════════════════════════════════════
+function today() { return new Date().toISOString().split('T')[0]; }
+function daysUntil(dateStr) {
+  const now = new Date(); now.setHours(0,0,0,0);
+  const target = new Date(dateStr); target.setHours(0,0,0,0);
+  return Math.round((target - now) / 86400000);
+}
+function getDayName() { return ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date().getDay()]; }
+function pillClass(subject) {
+  const s = subject.toLowerCase();
+  if (s.includes('stretch')) return 'pill-stretch';
+  if (s.includes('exam') || s === 'exam') return 'pill-exam';
+  if (s.includes('rest') || s === 'rest') return 'pill-rest';
+  if (s.includes('english')) return 'pill-english';
+  if (s.includes('maths')) return 'pill-maths';
+  if (s.includes('biology') || s.includes('chemistry') || s.includes('physics')) return 'pill-science';
+  if (s.includes('pe')) return 'pill-pe';
+  if (s.includes('psych')) return 'pill-psych';
+  if (s.includes('re')) return 'pill-re';
+  return 'pill-rest';
+}
+function subjectColor(subj) {
+  const s = subj.toLowerCase();
+  if (s.includes('english')) return 'var(--purple)';
+  if (s.includes('maths')) return 'var(--blue)';
+  if (s.includes('biology')) return 'var(--teal)';
+  if (s.includes('chemistry')) return 'var(--yellow)';
+  if (s.includes('physics')) return 'var(--pink)';
+  if (s.includes('psych')) return 'var(--pink)';
+  if (s.includes('pe')) return 'var(--teal)';
+  if (s.includes('re')) return 'var(--orange)';
+  return 'var(--purple)';
+}
+
+// ═══════════════════════════════════════════════════════
+//  NAV
+// ═══════════════════════════════════════════════════════
+function showPage(id, evt) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.bottom-nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  // sync top nav by matching onclick text
+  document.querySelectorAll('.nav-tab').forEach(t => {
+    if (t.getAttribute('onclick') && t.getAttribute('onclick').includes("'"+id+"'")) t.classList.add('active');
+  });
+  // sync bottom nav
+  const bottomBtn = document.querySelector(`.bottom-nav-btn[data-page="${id}"]`);
+  if (bottomBtn) bottomBtn.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ═══════════════════════════════════════════════════════
+//  TODAY PAGE
+// ═══════════════════════════════════════════════════════
+function buildHome() { buildNextExam(); buildStreakDots(); buildTodaySessions(); }
+
+function buildNextExam() {
+  const now = new Date(); now.setHours(0,0,0,0);
+  const next = EXAMS.find(e => new Date(e.date) >= now);
+  if (!next) return;
+  const days = daysUntil(next.date);
+  document.getElementById('nextExamName').textContent = next.emoji + ' ' + next.name;
+  document.getElementById('nextExamMeta').textContent = next.label + ' · ' + next.board + ' · ' + next.paper;
+  document.getElementById('nextDaysBig').textContent = days;
+  if (days <= 3) document.getElementById('nextExamCard').style.borderColor = 'rgba(248,113,113,0.6)';
+  else if (days <= 7) document.getElementById('nextExamCard').style.borderColor = 'rgba(251,146,60,0.5)';
+}
+
+function buildStreakDots() {
+  const container = document.getElementById('streakDots');
+  container.innerHTML = '';
+  const dayLabels = ['M','T','W','T','F','S','S'];
+  const todayIdx = new Date().getDay();
+  const mondayIdx = todayIdx === 0 ? 6 : todayIdx - 1;
+  for (let i = 0; i < 7; i++) {
+    const d = new Date();
+    d.setDate(d.getDate() - mondayIdx + i);
+    const dateStr = d.toISOString().split('T')[0];
+    const doneOnDate = !!state.doneSessions['_date_' + dateStr];
+    const isToday = dateStr === today();
+    const dot = document.createElement('div');
+    dot.className = 'streak-dot' + (doneOnDate ? ' done' : '') + (isToday ? ' today' : '');
+    dot.textContent = dayLabels[i];
+    container.appendChild(dot);
+  }
+}
+
+function getTodaysSessions() {
+  const dayName = getDayName();
+  const d = new Date();
+  const phase1End = new Date('2026-04-20');
+  const phase2End = new Date('2026-05-07');
+  let phaseId = d < phase1End ? 'phase1' : d < phase2End ? 'phase2' : 'phase3';
+  const ph = PHASES.find(p => p.id === phaseId);
+  if (!ph) return [];
+  const sessions = [];
+  for (const week of ph.weeks) {
+    const ds = week.days[dayName];
+    if (ds) {
+      ds.forEach((s, idx) => {
+        sessions.push({ id: `${today()}_${phaseId}_${dayName}_${idx}`, subject: s[0], task: s[1], isStretch: s[0].includes('Stretch') });
+      });
+      break;
+    }
+  }
+  return sessions;
+}
+
+let currentTimerSession = null;
+
+function buildTodaySessions() {
+  const sessions = getTodaysSessions();
+  const container = document.getElementById('todaySessions');
+  container.innerHTML = '';
+  const isWeekend = [0,6].includes(new Date().getDay());
+  const hasStretch = sessions.some(s => s.isStretch);
+  document.getElementById('todayHeader').textContent = isWeekend && hasStretch ? '2 sessions + optional stretch' : "Today's sessions";
+  let done = 0;
+  sessions.forEach(s => {
+    const isDone = !!state.doneSessions[s.id];
+    if (isDone) done++;
+    const isExam = s.subject.toLowerCase() === 'exam';
+    const isRest = s.subject.toLowerCase() === 'rest';
+    const div = document.createElement('div');
+    div.className = 'session-item' + (isDone ? ' done' : '') + (s.isStretch ? ' stretch' : '');
+    div.innerHTML = `
+      <div class="session-check">${isDone ? '✓' : ''}</div>
+      <div style="flex:1">
+        <div class="session-subject" style="color:${subjectColor(s.subject)}">${s.subject}${s.isStretch ? ' (optional)' : ''}</div>
+        <div class="session-title">${s.task}</div>
+        <div class="session-duration">${isExam ? 'Exam day' : isRest ? 'Rest' : '20 min session'}</div>
+      </div>
+      ${!isExam && !isRest && !s.isStretch ? '<div class="session-badge" style="background:rgba(167,139,250,0.2);color:var(--purple)">Start</div>' : ''}
+    `;
+    if (!isExam && !isRest) {
+      div.addEventListener('click', () => { if (!isDone) openTimer(s); else toggleSessionDone(s.id); });
+    }
+    container.appendChild(div);
+  });
+  const total = sessions.filter(s => !s.isStretch && s.subject.toLowerCase() !== 'exam' && s.subject.toLowerCase() !== 'rest').length;
+  const pct = total ? Math.round((done/total)*100) : 0;
+  document.getElementById('todayProgress').textContent = `${done}/${total} done`;
+  document.getElementById('todayProgressBar').style.width = pct + '%';
+}
+
+// ═══════════════════════════════════════════════════════
+//  TIMER
+// ═══════════════════════════════════════════════════════
+let timerInterval = null, timerSeconds = 20*60, timerRunning = false;
+const TOTAL_SECS = 20*60, CIRCUMFERENCE = 276.46;
+
+function openTimer(session) {
+  currentTimerSession = session;
+  document.getElementById('timerSubject').textContent = session.subject;
+  document.getElementById('timerTask').textContent = session.task;
+  document.getElementById('timerContent').style.display = 'block';
+  document.getElementById('timerDoneMsg').style.display = 'none';
+  timerSeconds = TOTAL_SECS; timerRunning = false; clearInterval(timerInterval);
+  updateTimerDisplay();
+  document.getElementById('timerModal').classList.add('open');
+  document.getElementById('timerStartBtn').textContent = 'Start';
+}
+function closeTimer() {
+  document.getElementById('timerModal').classList.remove('open');
+  clearInterval(timerInterval); timerRunning = false;
+}
+function timerToggle() {
+  if (timerRunning) {
+    clearInterval(timerInterval); timerRunning = false;
+    document.getElementById('timerStartBtn').textContent = 'Resume';
+  } else {
+    timerRunning = true;
+    document.getElementById('timerStartBtn').textContent = 'Pause';
+    timerInterval = setInterval(() => {
+      timerSeconds--;
+      updateTimerDisplay();
+      if (timerSeconds <= 0) { clearInterval(timerInterval); timerRunning = false; timerFinished(); }
+    }, 1000);
+  }
+}
+function timerReset() {
+  clearInterval(timerInterval); timerRunning = false; timerSeconds = TOTAL_SECS;
+  updateTimerDisplay();
+  document.getElementById('timerStartBtn').textContent = 'Start';
+}
+function updateTimerDisplay() {
+  const m = Math.floor(timerSeconds/60), s = timerSeconds%60;
+  document.getElementById('timerDisplay').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  const pct = timerSeconds / TOTAL_SECS;
+  document.getElementById('timerCircle').style.strokeDashoffset = CIRCUMFERENCE * (1 - pct);
+  document.getElementById('timerCircle').style.stroke = timerSeconds < 120 ? 'var(--orange)' : 'var(--purple)';
+  const phase = pct > 0.5 ? 'Running...' : pct > 0.15 ? 'More than halfway there' : 'Nearly done';
+  document.getElementById('timerPhase').textContent = timerRunning ? phase : 'Ready';
+}
+function timerFinished() {
+  document.getElementById('timerContent').style.display = 'none';
+  document.getElementById('timerDoneMsg').style.display = 'block';
+  if (currentTimerSession) markSessionDone(currentTimerSession.id);
+}
+function markSessionDone(id) {
+  if (!state.doneSessions[id]) {
+    state.doneSessions[id] = true;
+    state.doneSessions['_date_' + today()] = true;
+    state.totalSessions++;
+    updateStreak();
+    saveState();
+  }
+  buildTodaySessions();
+  buildStreakDots();
+}
+function toggleSessionDone(id) {
+  if (state.doneSessions[id]) {
+    delete state.doneSessions[id];
+    state.totalSessions = Math.max(0, state.totalSessions - 1);
+  } else {
+    state.doneSessions[id] = true;
+    state.doneSessions['_date_' + today()] = true;
+    state.totalSessions++;
+    updateStreak();
+  }
+  saveState();
+  buildTodaySessions();
+  buildStreakDots();
+}
+function updateStreak() {
+  const t = today();
+  if (state.lastDate === t) return;
+  const yesterday = new Date(); yesterday.setDate(yesterday.getDate()-1);
+  const yStr = yesterday.toISOString().split('T')[0];
+  if (state.lastDate === yStr) state.streak++;
+  else if (state.lastDate !== t) state.streak = 1;
+  state.lastDate = t;
+}
+
+// ═══════════════════════════════════════════════════════
+//  TOAST
+// ═══════════════════════════════════════════════════════
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ═══════════════════════════════════════════════════════
+//  TIMETABLE (Plan tab)
+// ═══════════════════════════════════════════════════════
+function buildTimetable() {
+  const container = document.getElementById('timetableContent');
+  container.innerHTML = '';
+  PHASES.forEach((phase, pi) => {
+    const header = document.createElement('div');
+    header.className = 'phase-header' + (pi === 0 ? ' open' : '');
+    header.style.borderLeft = `3px solid ${phase.color}`;
+    header.innerHTML = `<div><h3>${phase.label}</h3><p>${phase.period} — ${phase.desc}</p></div><span class="phase-chevron">▾</span>`;
+    const body = document.createElement('div');
+    body.className = 'phase-body' + (pi === 0 ? ' open' : '');
+    phase.weeks.forEach(week => {
+      const wl = document.createElement('div'); wl.className = 'week-label'; wl.textContent = week.label; body.appendChild(wl);
+      ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].forEach(day => {
+        const sessions = week.days[day]; if (!sessions) return;
+        const row = document.createElement('div'); row.className = 'day-row';
+        row.innerHTML = `<div class="day-label">${day}</div><div class="day-sessions">${sessions.map(s => `<span class="day-session-pill ${pillClass(s[0])}">${s[0]}: ${s[1]}</span>`).join('')}</div>`;
+        body.appendChild(row);
+      });
+    });
+    header.addEventListener('click', () => {
+      body.classList.toggle('open'); header.classList.toggle('open');
+    });
+    container.appendChild(header);
+    container.appendChild(body);
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+//  EXAMS TIMELINE
+// ═══════════════════════════════════════════════════════
+function buildExamTimeline() {
+  const container = document.getElementById('examTimeline');
+  container.innerHTML = '';
+  EXAMS.forEach(e => {
+    const days = daysUntil(e.date);
+    const isPast = days < 0, isNext = !isPast && days <= 5, isSoon = !isPast && days <= 10;
+    const entry = document.createElement('div'); entry.className = 'exam-entry';
+    const dotClass = isPast ? 'past' : isNext ? 'next' : isSoon ? 'soon' : '';
+    const daysText = isPast ? `${Math.abs(days)}d ago` : days === 0 ? 'TODAY' : `${days}d`;
+    const daysClass = days <= 3 && !isPast ? 'hot' : days <= 7 && !isPast ? 'warm' : 'cool';
+    entry.innerHTML = `
+      <div class="exam-dot ${dotClass}">${e.emoji}</div>
+      <div class="exam-info">
+        <div class="date">${e.label}</div>
+        <div class="name">${e.name}</div>
+        <div class="paper">${e.paper}</div>
+        <span class="board-badge board-${e.board.toLowerCase()}">${e.board}</span>
+      </div>
+      <div class="days-away ${isPast ? '' : daysClass}">${isPast ? '✓' : daysText}</div>
+    `;
+    container.appendChild(entry);
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+//  PAST PAPERS
+// ═══════════════════════════════════════════════════════
+function buildPastPapers() {
+  const container = document.getElementById('pastPapersSection');
+  let html = '<div class="card"><div class="card-title">Past papers (2022–2024)</div>';
+  PAST_PAPERS.forEach(pp => {
+    html += `<div class="pp-subject">
+      <div class="pp-subject-name" style="color:${pp.color}">${pp.subject} <span style="font-size:0.6rem;color:var(--text3)">${pp.board}</span></div>
+      <div class="pp-links">
+        <a href="${pp.url}" target="_blank" rel="noopener" class="pp-link">2022</a>
+        <a href="${pp.url}" target="_blank" rel="noopener" class="pp-link">2023</a>
+        <a href="${pp.url}" target="_blank" rel="noopener" class="pp-link">2024</a>
+      </div>
+    </div>`;
+  });
+  html += '<p style="font-size:0.68rem;color:var(--text3);margin-top:8px">Links go to the exam board past paper page. Filter by year and Foundation tier once there.</p></div>';
+  container.innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════════════
+//  QUESTIONS DATA (retrieval practice — carried over from v2)
+// ═══════════════════════════════════════════════════════
+const QUESTIONS = {};
+QUESTIONS["0_0"] = [
+  {q:"Read the following extract. List four things you learn about the character's living conditions from the text: 'The room was bare except for a thin mattress on the floor. Condensation dripped down the single window, and the air smelled of damp plaster. She pulled her coat tighter, using it as a blanket. Outside, the city hummed with warmth she could not reach.'", a:"Award 1 mark for each valid point, e.g.: The room has very little furniture (1 mark); There is only a mattress on the floor (1 mark); The room is cold and damp (1 mark); She uses her coat as a blanket because she has no bedding (1 mark); She is isolated from the comfort of the city outside (1 mark). Accept any four reasonable explicit or implicit points.", marks:4},
+  {q:"What does the writer suggest about the narrator's feelings in the following sentence? 'I walked past the old house without stopping, though my feet seemed to slow of their own accord.'", a:"The narrator has conflicting feelings about the old house (1 mark); they want to move on but are drawn back emotionally/unconsciously (1 mark). Accept any valid inference about internal conflict or reluctance.", marks:2},
+  {q:"A student read the extract and said: 'The writer makes the reader feel sympathy for the main character.' To what extent do you agree? You should refer to the following extract in your response: 'Nobody called his name at registration. The teacher's eyes swept over him as though he were part of the furniture. At break, he sat on the wall and counted aeroplanes.'", a:"Clear evaluation of the statement with personal response (1 mark); identification of how specific details create sympathy, e.g. being overlooked at registration, being invisible to the teacher (1 mark per point, max 2); analysis of the effect of 'counted aeroplanes' suggesting loneliness and escapism (1 mark); consideration of the extent — fully agree, partially, or challenge (1 mark). Max 6 marks.", marks:6},
+];
+QUESTIONS["0_1"] = [
+  {q:"Identify the language technique used in the following quotation and explain its effect: 'The wind screamed through the alley, clawing at their coats.'", a:"Personification — the wind is given human qualities of screaming and clawing (1 mark). Effect: creates a sense of the wind as a hostile, aggressive force (1 mark); makes the environment feel threatening and dangerous (1 mark).", marks:4},
+  {q:"What effect does the writer's use of the simile 'her smile spread like sunrise' have on the reader?", a:"The simile compares the smile to sunrise (1 mark); this suggests warmth, hope, and gradual beauty (1 mark); creates a positive, uplifting tone (1 mark).", marks:2},
+  {q:"Analyse how the writer uses language to create a sense of danger: 'The path narrowed. Stones crumbled beneath each step. Below, the river thrashed against black rocks, hungry and relentless.'", a:"Short sentence 'The path narrowed' creates tension through brevity (1 mark); 'crumbled' suggests instability (1 mark); personification of the river as 'hungry' makes it predatory (1 mark); 'thrashed' is a violent verb (1 mark); 'black rocks' has connotations of danger (1 mark). Max 6 marks.", marks:6},
+];
+QUESTIONS["0_2"] = [
+  {q:"How does the writer use the opening of the text to engage the reader? The text begins: 'Nobody remembers the day the factory closed. But everybody remembers what came after.'", a:"Creates mystery and intrigue (1 mark); contrast between 'nobody' and 'everybody' creates structural opposition (1 mark); implies a significant event, raising questions (1 mark); short second sentence shifts focus from past to impact (1 mark). Max 4 marks.", marks:4},
+  {q:"How does the writer use the ending to create impact? The text ends: 'She closed the door softly. The house settled into silence, as though it had been waiting.'", a:"Quiet ending contrasts with earlier dramatic events (1 mark); personification of house 'waiting' suggests the departure was inevitable (1 mark); 'softly' implies acceptance (1 mark); provides closure while encouraging reflection (1 mark). Max 6 marks.", marks:6},
+];
+QUESTIONS["0_3"] = [
+  {q:"A student said: 'The writer successfully makes the reader feel uneasy throughout the extract.' To what extent do you agree?", a:"Clear evaluative stance (1 mark); identification of at least two methods (word choice, imagery, sentence structure) with supporting quotation (1 mark per method, max 2); analysis of how each creates unease (1 mark per analysis, max 2); overall judgement with justification (1 mark). Max 6 marks.", marks:6},
+  {q:"Compare how the writers of Text A and Text B present their ideas about city life. Consider the writers' attitudes and their methods.", a:"Attitude in Text A with evidence (1 mark); attitude in Text B with evidence (1 mark); comparison of attitudes (1 mark); method in Text A with analysis (1 mark); method in Text B with analysis (1 mark); developed comparison of methods (1 mark). Max 6 marks.", marks:6},
+];
+QUESTIONS["0_4"] = [
+  {q:"Write the opening of a formal letter to your local MP arguing for more funding for youth services. Include correct letter conventions.", a:"Correct letter format (1 mark); formal register appropriate for an MP (1 mark); clear statement of purpose (1 mark); at least one persuasive point (1 mark). Max 4 marks.", marks:4},
+  {q:"What is the correct way to end a formal letter when you do not know the recipient's name?", a:"'Yours faithfully' (1 mark).", marks:1},
+  {q:"Write the opening of a speech to your year group persuading them to volunteer in the community. Use at least two persuasive techniques.", a:"Appropriate speech opening with direct address (1 mark); clear persuasive purpose (1 mark); first technique used effectively (1 mark); second technique used effectively (1 mark); suitable register (1 mark). Max 6 marks.", marks:6},
+];
+QUESTIONS["0_5"] = [
+  {q:"Write the opening paragraph of a descriptive piece titled 'The Abandoned Fairground'. Focus on using sensory language to create atmosphere.", a:"Use of at least two senses (1 mark per sense, max 2); effective descriptive techniques — metaphor, simile, personification (1 mark); clear mood or atmosphere (1 mark); ambitious vocabulary (1 mark); varied sentence structures (1 mark). Max 6 marks.", marks:6},
+  {q:"Explain what is meant by 'show, don't tell' in creative writing. Give a brief example.", a:"Conveying emotions through actions and sensory details rather than stating them directly (1 mark). Example: instead of 'She was nervous,' write 'Her fingers twisted the hem of her sleeve' (1 mark).", marks:2},
+  {q:"What is a narrative 'hook'?", a:"An opening line or technique designed to immediately engage the reader (1 mark).", marks:1},
+];
+QUESTIONS["0_6"] = [
+  {q:"'Social media does more harm than good for young people.' Write the opening of an argumentative essay presenting your viewpoint.", a:"Clear viewpoint stated (1 mark); engaging opening strategy (1 mark); at least one developed argument (1 mark); formal/semi-formal register (1 mark); at least one persuasive technique (1 mark). Max 6 marks.", marks:6},
+  {q:"Identify two persuasive techniques from: 'Do we really want our children growing up in a world without green spaces? Every single day, another park is lost to concrete and commerce. We must act now.'", a:"Rhetorical question (1 mark); emotive language/hyperbole — 'Every single day' (1 mark); imperative — 'We must act now' (1 mark). Any two with identification. Max 2 marks.", marks:2},
+];
+QUESTIONS["1_0"] = [
+  {q:"In 'Ozymandias', how does Shelley present the theme of power? Refer to specific language and structural choices.", a:"Power presented as temporary and futile (1 mark); irony of the boast undermined by surrounding desert (1 mark); 'shattered visage' and 'trunkless legs' show power in decay (1 mark); second-hand account distances reader from Ozymandias (1 mark); desert symbolises time destroying all human achievement (1 mark); sonnet form subverted (1 mark). Max 6 marks.", marks:6},
+  {q:"What does the 'huge stone legs' imagery suggest in 'Ozymandias'?", a:"'Huge' size suggests immense power and ambition (1 mark); they are broken ('trunkless') implying even great power is destroyed by time (1 mark).", marks:2},
+  {q:"Compare how poets present conflict in 'Exposure' by Wilfred Owen and one other poem from the anthology.", a:"Analysis of conflict in 'Exposure' with quotation and analysis (1 mark); comparison poem identified and analysed (1 mark); developed comparison showing similarity or difference (1 mark); consideration of context or intent (1 mark). Max 6 marks.", marks:6},
+];
+QUESTIONS["1_1"] = [
+  {q:"Read the following unseen poem and explain how the poet creates a sense of loss: 'The chair sits empty by the window still, / where light falls on the cushion, worn and thin. / I water plants she loved — against my will / I keep her garden living from within.'", a:"'Empty chair' is a symbol of absence (1 mark); 'worn and thin' suggests gradual wearing away of presence (1 mark); 'against my will' reveals pain (1 mark); 'her garden' makes loss personal (1 mark); regular rhyme creates controlled tone contrasting with deep emotion (1 mark). Max 6 marks.", marks:6},
+  {q:"Identify the form of a poem that has 14 lines, a volta, and a rhyme scheme.", a:"Sonnet (1 mark).", marks:1},
+  {q:"What is the effect of enjambment in poetry?", a:"Enjambment carries a sentence over a line break without punctuation (1 mark); creates momentum, urgency, or flowing thought (1 mark); can emphasise the word at the start of the next line (1 mark).", marks:2},
+];
+QUESTIONS["1_2"] = [
+  {q:"How does the writer use setting to reflect the mood or themes of a novel? Refer to a prose text you have studied.", a:"Specific setting identified (1 mark); setting reflects mood — e.g. bleak landscape mirroring despair (1 mark); analysis of specific language with quotation (1 mark); link to key theme (1 mark); how setting changes reflects character development (1 mark). Max 6 marks.", marks:6},
+  {q:"What is the effect of using first-person narration in a novel?", a:"Direct access to thoughts and feelings, creating intimacy (1 mark); limits to one perspective so reader may receive a biased account (1 mark).", marks:2},
+];
+QUESTIONS["1_3"] = [
+  {q:"What is a soliloquy and what is its dramatic purpose?", a:"A speech delivered by a character alone on stage, revealing inner thoughts to the audience (1 mark); gives insight into true feelings, motivations, or moral dilemmas hidden from other characters (1 mark).", marks:2},
+  {q:"Explain the term 'dramatic irony' and give an example.", a:"When the audience knows something a character does not (1 mark); creates tension, humour, or sympathy (1 mark).", marks:2},
+];
+QUESTIONS["1_4"] = [
+  {q:"Why is historical context important when studying a literary text?", a:"Helps the reader understand social, political, and cultural conditions that influenced the writer (1 mark); allows appreciation of why characters behave in certain ways (1 mark).", marks:2},
+  {q:"What does the term 'social context' mean in literary study?", a:"Social conditions, attitudes, beliefs, and norms of the time in which a text was written or set (1 mark); includes class structure, gender roles, religious beliefs, and cultural expectations (1 mark).", marks:2},
+];
+QUESTIONS["2_0"] = [
+  {q:"Write 0.35 as a fraction in its simplest form.", a:"0.35 = 35/100 (1 mark) = 7/20 (1 mark)", marks:2},
+  {q:"Find the highest common factor (HCF) of 24 and 36.", a:"Factors of 24: 1,2,3,4,6,8,12,24. Factors of 36: 1,2,3,4,6,9,12,18,36. HCF = 12 (1 mark)", marks:2},
+  {q:"Work out 3/5 of 240.", a:"240 ÷ 5 = 48 (1 mark). 48 × 3 = 144 (1 mark)", marks:2},
+  {q:"Write 4500 in standard form.", a:"4.5 × 10³ (1 mark)", marks:1},
+  {q:"A television costs £360 and is reduced by 15% in a sale. Work out the sale price.", a:"15% of £360 = £54 (1 mark). Sale price = £360 − £54 = £306 (1 mark). Or: 0.85 × 360 = £306.", marks:4},
+];
+QUESTIONS["2_1"] = [
+  {q:"Simplify 5a + 3b − 2a + b.", a:"3a + 4b (1 mark)", marks:1},
+  {q:"Expand and simplify 3(2x + 1) + 2(x − 4).", a:"6x + 3 + 2x − 8 (1 mark). = 8x − 5 (1 mark)", marks:2},
+  {q:"Solve 4x − 7 = 13.", a:"4x = 20 (1 mark). x = 5 (1 mark)", marks:2},
+  {q:"The nth term of a sequence is 4n − 3. (a) Find first three terms. (b) Is 50 a term in the sequence?", a:"(a) 1, 5, 9 (1 mark for all three). (b) 4n − 3 = 50, 4n = 53, n = 13.25 — not a whole number so 50 is NOT a term (1 mark with reason).", marks:4},
+];
+QUESTIONS["2_2"] = [
+  {q:"Share £40 in the ratio 3:5.", a:"Total parts = 8 (1 mark). Amounts: £15 and £25 (1 mark)", marks:2},
+  {q:"A car travels 120 miles in 2 hours 30 minutes. Calculate the average speed.", a:"2.5 hours (1 mark). Speed = 120 ÷ 2.5 = 48 mph (1 mark)", marks:2},
+  {q:"Increase £250 by 12%.", a:"£250 × 1.12 = £280 (1 mark)", marks:2},
+  {q:"A house was bought for £180,000. Year 1: increased 5%. Year 2: decreased 3%. Work out the value after two years.", a:"After year 1: £180,000 × 1.05 = £189,000 (1 mark). After year 2: £189,000 × 0.97 = £183,330 (1 mark).", marks:4},
+];
+QUESTIONS["2_3"] = [
+  {q:"Work out the area of a triangle with base 8 cm and height 5 cm.", a:"Area = ½ × 8 × 5 = 20 cm² (1 mark)", marks:2},
+  {q:"Calculate the circumference of a circle with radius 7 cm. Give your answer to 1 decimal place.", a:"C = 2π × 7 = 44.0 cm (1 mark)", marks:2},
+  {q:"Angles in a triangle are 65°, 48° and x°. Find x.", a:"x = 180 − 65 − 48 = 67° (1 mark)", marks:2},
+  {q:"A right-angled triangle has base 6 cm and hypotenuse 10 cm. (a) Find the third side. (b) Find the area.", a:"(a) √(100−36) = √64 = 8 cm (1 mark). (b) Area = ½ × 6 × 8 = 24 cm² (1 mark).", marks:4},
+];
+QUESTIONS["2_4"] = [
+  {q:"A bag has 3 red, 5 blue and 2 green marbles. What is the probability of picking a blue marble?", a:"P(blue) = 5/10 = 1/2 (1 mark)", marks:1},
+  {q:"The probability it rains is 0.3. What is the probability it does not rain?", a:"1 − 0.3 = 0.7 (1 mark)", marks:2},
+  {q:"A box contains 4 red and 6 yellow counters. Two taken without replacement. Find P(both red).", a:"4/10 × 3/9 = 12/90 = 2/15 (1 mark for each correct fraction, 1 mark for answer). Max 4 marks.", marks:4},
+];
+QUESTIONS["2_5"] = [
+  {q:"Find the mode of: 3, 5, 7, 3, 8, 3, 9.", a:"Mode = 3 (1 mark)", marks:1},
+  {q:"Find the median of: 4, 7, 2, 9, 5.", a:"Ordered: 2, 4, 5, 7, 9. Median = 5 (1 mark)", marks:2},
+  {q:"The mean of five numbers is 8. Four numbers are 6, 9, 10 and 5. Find the fifth.", a:"Total = 40. Fifth = 40 − 30 = 10 (1 mark)", marks:2},
+];
+QUESTIONS["3_0"] = [
+  {q:"Name two organelles found in both animal and plant cells.", a:"Any two from: nucleus, cytoplasm, cell membrane, mitochondria, ribosomes (1 mark each).", marks:2},
+  {q:"State what is meant by diffusion.", a:"Net movement of particles from high concentration to low concentration (1 mark).", marks:2},
+  {q:"Explain how root hair cells are adapted for absorbing water and mineral ions.", a:"Large surface area / long hair-like extension (1 mark); water enters by osmosis (1 mark); mineral ions absorbed by active transport requiring energy (1 mark). Max 6 marks.", marks:6},
+];
+QUESTIONS["3_1"] = [
+  {q:"Put in order from smallest to largest: organ, tissue, cell, organ system.", a:"Cell → tissue → organ → organ system (1 mark)", marks:1},
+  {q:"Name the three types of blood vessel.", a:"Arteries, veins, capillaries (1 mark each). Max 3 marks.", marks:3},
+  {q:"Explain what enzymes are and how temperature affects them.", a:"Biological catalysts (1 mark); have an active site with specific shape (1 mark); increasing temperature increases rate (1 mark); above optimum the enzyme denatures (1 mark); active site changes shape (1 mark). Max 6 marks.", marks:6},
+];
+QUESTIONS["3_2"] = [
+  {q:"What is a pathogen?", a:"A microorganism that causes disease (1 mark).", marks:1},
+  {q:"Name the four types of pathogen.", a:"Bacteria, virus, fungi, protist (1 mark each). Max 4 marks.", marks:4},
+  {q:"Describe how vaccination protects against future infection.", a:"Dead or inactive pathogen injected (1 mark); white blood cells produce antibodies (1 mark); memory cells remain (1 mark); if same pathogen enters, antibodies produced faster and in larger amounts (1 mark). Max 6 marks.", marks:6},
+];
+QUESTIONS["3_3"] = [
+  {q:"Write the word equation for photosynthesis.", a:"Carbon dioxide + water → glucose + oxygen (1 mark reactants, 1 mark products).", marks:2},
+  {q:"Where in the cell does aerobic respiration take place?", a:"Mitochondria (1 mark).", marks:1},
+  {q:"Explain how three factors limit the rate of photosynthesis.", a:"Light intensity — low light limits rate (1 mark); CO₂ concentration — low CO₂ limits rate (1 mark); temperature — above optimum enzymes denature (1 mark). Max 6 marks.", marks:6},
+];
+QUESTIONS["3_4"] = [
+  {q:"What is homeostasis?", a:"The regulation of a constant internal environment (1 mark).", marks:2},
+  {q:"Describe the pathway of a reflex arc when touching a hot object.", a:"Receptor detects stimulus (1 mark); impulse travels along sensory neurone to spinal cord (1 mark); passes to relay neurone (1 mark); passes to motor neurone (1 mark); muscle contracts to move hand away (1 mark). Max 6 marks.", marks:6},
+  {q:"Name the hormone that controls blood glucose when too high, and where it is produced.", a:"Insulin (1 mark); produced in the pancreas (1 mark).", marks:2},
+];
+QUESTIONS["3_5"] = [
+  {q:"Define the term 'allele'.", a:"A version of a gene (1 mark).", marks:1},
+  {q:"Cystic fibrosis is recessive (f). Two carriers (Ff) have a child. What is the probability of the child having CF?", a:"Punnett square: FF, Ff, Ff, ff (1 mark). Probability = 1/4 or 25% (1 mark). Two recessive alleles needed (1 mark).", marks:4},
+  {q:"Describe the process of natural selection.", a:"Variation in population (1 mark); better-adapted individuals survive and reproduce (1 mark); pass advantageous alleles to offspring (1 mark); characteristic becomes more common over generations (1 mark). Max 6 marks.", marks:6},
+];
+QUESTIONS["3_6"] = [
+  {q:"Define the term 'ecosystem'.", a:"Interaction of a community of organisms with the non-living parts of their environment (1 mark).", marks:2},
+  {q:"In the food chain: grass → rabbit → fox — name the producer and secondary consumer.", a:"Producer: grass (1 mark); secondary consumer: fox (1 mark).", marks:2},
+  {q:"Explain the importance of the carbon cycle.", a:"CO₂ removed by photosynthesis (1 mark); carbon passed along food chains (1 mark); returned by respiration (1 mark); and combustion (1 mark); decomposers release CO₂ from dead organisms (1 mark). Max 6 marks.", marks:6},
+];
+QUESTIONS["4_0"] = [
+  {q:"State the relative charge and relative mass of a proton.", a:"Charge: +1 (1 mark); mass: 1 (1 mark).", marks:2},
+  {q:"An atom of sodium has atomic number 11 and mass number 23. State the number of protons, neutrons and electrons.", a:"Protons: 11 (1 mark); neutrons: 12 (1 mark); electrons: 11 (1 mark).", marks:2},
+  {q:"Explain why Group 1 elements have similar chemical properties.", a:"All have one electron in outer shell (1 mark); outer electrons determine chemical properties (1 mark); all react by losing one electron (1 mark) forming +1 ions (1 mark).", marks:4},
+];
+QUESTIONS["4_1"] = [
+  {q:"What type of bonding is in sodium chloride?", a:"Ionic bonding (1 mark).", marks:1},
+  {q:"Describe the structure and bonding in diamond and explain why it is hard.", a:"Giant covalent structure (1 mark); each carbon bonded to four others (1 mark); by strong covalent bonds (1 mark); many bonds require huge energy to break (1 mark). Max 6 marks.", marks:6},
+  {q:"Explain why metals conduct electricity.", a:"Positive ions in a sea of delocalised electrons (1 mark); electrons free to move and carry charge (1 mark).", marks:2},
+];
+QUESTIONS["4_2"] = [
+  {q:"Calculate the Mr of calcium carbonate CaCO₃. (Ca=40, C=12, O=16)", a:"40 + 12 + 48 = 100 (1 mark).", marks:2},
+  {q:"Why does mass appear to decrease in some reactions in open containers?", a:"A gaseous product escapes to the atmosphere (1 mark); so it is not measured (1 mark); total mass is actually conserved (1 mark).", marks:4},
+];
+QUESTIONS["4_3"] = [
+  {q:"Order these metals from most to least reactive: iron, potassium, copper, zinc.", a:"Potassium, zinc, iron, copper (1 mark).", marks:1},
+  {q:"Write the word equation for hydrochloric acid + sodium hydroxide.", a:"Hydrochloric acid + sodium hydroxide → sodium chloride + water (1 mark).", marks:2},
+  {q:"Describe the process of electrolysis of molten lead bromide.", a:"Heated until molten so ions move freely (1 mark); Pb²⁺ attracted to cathode (1 mark); lead ions gain electrons, reduced to lead metal (1 mark); Br⁻ attracted to anode (1 mark); bromide ions lose electrons, oxidised (1 mark); bromine gas formed at anode (1 mark).", marks:6},
+];
+QUESTIONS["4_4"] = [
+  {q:"What is an exothermic reaction?", a:"Transfers energy to surroundings (1 mark); temperature increases (1 mark).", marks:2},
+  {q:"Explain, using bond energies, whether a reaction is exothermic or endothermic.", a:"Energy required to break bonds — endothermic (1 mark); energy released making new bonds — exothermic (1 mark); if more energy released making bonds than breaking → exothermic overall (1 mark).", marks:4},
+];
+QUESTIONS["4_5"] = [
+  {q:"State two ways to increase the rate of a chemical reaction.", a:"Any two: increase temperature, concentration, use a catalyst, increase surface area (1 mark each).", marks:2},
+  {q:"Use collision theory to explain why increasing temperature increases rate.", a:"More kinetic energy (1 mark); particles move faster and collide more frequently (1 mark); more particles have energy above activation energy (1 mark); more successful collisions (1 mark).", marks:6},
+];
+QUESTIONS["4_6"] = [
+  {q:"Describe how fractional distillation separates crude oil.", a:"Oil heated and evaporated (1 mark); vapours rise up the column (1 mark); hot at bottom, cool at top (1 mark); hydrocarbons condense at different heights depending on boiling points (1 mark).", marks:6},
+  {q:"Describe a test to show a hydrocarbon is an alkene.", a:"Add bromine water (1 mark); if alkene, bromine water turns colourless (1 mark); if alkane, stays orange/brown (1 mark).", marks:2},
+];
+QUESTIONS["4_7"] = [
+  {q:"A food colouring separates into three spots in paper chromatography. What does this tell you?", a:"The food colouring is a mixture (1 mark); it contains three different substances/dyes (1 mark).", marks:2},
+  {q:"State the flame test colours for: lithium, potassium, copper, sodium.", a:"Lithium: crimson (1 mark); potassium: lilac (1 mark); copper: green (1 mark); sodium: yellow/orange (1 mark).", marks:2},
+];
+QUESTIONS["4_8"] = [
+  {q:"Name two greenhouse gases.", a:"Any two: carbon dioxide, methane, water vapour (1 mark each).", marks:2},
+  {q:"Explain how greenhouse gases cause global warming.", a:"Short-wavelength radiation from Sun passes through atmosphere (1 mark); Earth re-emits as infrared (1 mark); greenhouse gases absorb infrared (1 mark); re-radiate back to Earth trapping heat (1 mark). Max 6 marks.", marks:6},
+];
+QUESTIONS["4_9"] = [
+  {q:"State the conditions used in the Haber process and the product.", a:"Temperature ~450°C (1 mark); pressure ~200 atm (1 mark); iron catalyst (1 mark); product: ammonia (1 mark).", marks:4},
+  {q:"State two benefits of recycling metals.", a:"Any two: reduces mining (1 mark); uses less energy than extraction (1 mark); reduces landfill (1 mark); conserves finite resources (1 mark).", marks:2},
+];
+QUESTIONS["5_0"] = [
+  {q:"Name two energy stores.", a:"Any two: kinetic, thermal, chemical, elastic potential, gravitational potential, nuclear (1 mark each).", marks:2},
+  {q:"A kettle has a power of 2000 W. It runs for 180 seconds. Calculate energy transferred. E = P × t.", a:"E = 2000 × 180 = 360 000 J (1 mark for substitution, 1 mark for answer).", marks:3},
+  {q:"Evaluate wind turbines vs burning fossil fuels for electricity generation.", a:"Wind is renewable (1 mark); fossil fuels non-renewable (1 mark); turbines produce no CO₂ (1 mark); turbines unreliable (1 mark); lower power output (1 mark); fossil fuels generate on demand (1 mark).", marks:6},
+];
+QUESTIONS["5_1"] = [
+  {q:"State the equation linking potential difference, current and resistance.", a:"V = I × R (1 mark).", marks:1},
+  {q:"A current of 3 A flows through a 4 Ω resistor. Calculate the potential difference.", a:"V = 3 × 4 = 12 V (1 mark).", marks:3},
+  {q:"Explain why the National Grid uses step-up transformers to transmit at high voltage.", a:"Increases voltage (1 mark); decreases current for same power (1 mark); lower current means less energy lost as heat in cables (1 mark); heating effect depends on current squared (1 mark); more efficient transmission (1 mark).", marks:6},
+];
+QUESTIONS["5_2"] = [
+  {q:"A block has mass 500 g and volume 200 cm³. Calculate density.", a:"500 ÷ 200 = 2.5 g/cm³ (1 mark).", marks:2},
+  {q:"Explain what happens to internal energy and temperature as a solid melts.", a:"Internal energy increases (1 mark); temperature remains constant (1 mark); energy used to break bonds not increase kinetic energy (1 mark).", marks:4},
+];
+QUESTIONS["5_3"] = [
+  {q:"A radioactive sample has activity 800 Bq and half-life 3 hours. Calculate activity after 9 hours.", a:"9 hours = 3 half-lives. 800 → 400 → 200 → 100 Bq (1 mark for process, 1 mark for 100 Bq).", marks:3},
+  {q:"Compare alpha, beta and gamma in terms of penetrating power and ionising ability.", a:"Alpha: most ionising, least penetrating — stopped by paper (1 mark). Beta: moderate both — stopped by aluminium (1 mark). Gamma: least ionising, most penetrating — reduced by lead (1 mark). Max 6 marks.", marks:6},
+];
+QUESTIONS["5_4"] = [
+  {q:"A car has mass 1200 kg. Resultant force 3600 N. Calculate acceleration.", a:"a = 3600 ÷ 1200 = 3 m/s² (1 mark).", marks:3},
+  {q:"Explain why stopping distance increases on a wet road.", a:"Stopping distance = thinking + braking distance (1 mark); wet road reduces friction (1 mark); braking force reduced (1 mark); braking distance increases (1 mark).", marks:4},
+];
+QUESTIONS["5_5"] = [
+  {q:"A wave has frequency 5 Hz and wavelength 2 m. Calculate wave speed.", a:"v = 5 × 2 = 10 m/s (1 mark).", marks:2},
+  {q:"Describe the difference between transverse and longitudinal waves.", a:"Transverse: oscillations perpendicular to energy transfer direction (1 mark). Longitudinal: oscillations parallel to energy transfer (1 mark). Examples required for full marks.", marks:4},
+];
+QUESTIONS["5_6"] = [
+  {q:"State Fleming's left-hand rule and what each finger represents.", a:"Thumb: force/motion (1 mark); first finger: magnetic field (1 mark); second finger: current direction (1 mark).", marks:4},
+  {q:"Explain how a DC motor works including the role of the split-ring commutator.", a:"Current-carrying coil in magnetic field (1 mark); force on each side in opposite directions causes rotation (1 mark); commutator reverses current every half turn (1 mark); ensures coil continues spinning same direction (1 mark). Max 6 marks.", marks:6},
+];
+QUESTIONS["6_0"] = [
+  {q:"Identify one stage in Piaget's theory of cognitive development.", a:"Sensorimotor (0–2), Preoperational (2–7), Concrete operational (7–11), Formal operational (11+). Any one (1 mark).", marks:1},
+  {q:"Describe Piaget's conservation task and what it shows.", a:"Shows two identical quantities (1 mark); one transformed (1 mark); preoperational children say amount changed (1 mark); shows centration and inability to conserve (1 mark).", marks:4},
+  {q:"Evaluate Piaget's theory of cognitive development.", a:"Strength: influenced education, e.g. discovery learning (1 mark). Weakness: McGarrigle & Donaldson's Naughty Teddy study — children conserved earlier than Piaget claimed (1 mark); tasks too artificial (1 mark). Weakness: didn't account for social interaction (1 mark). Max 6 marks.", marks:6},
+];
+QUESTIONS["6_1"] = [
+  {q:"Describe Milgram's study of obedience — procedure and results.", a:"40 male participants via newspaper (1 mark); told to administer shocks to learner (confederate) (1 mark); shocks from 15V to 450V (1 mark); 65% continued to maximum 450V (1 mark).", marks:4},
+  {q:"Evaluate Milgram's study.", a:"Strength: standardised procedures, replicable (1 mark); real-world insights (1 mark). Weakness: participants deceived (1 mark); significant psychological distress (1 mark); androcentric sample (all male) (1 mark). Max 6 marks.", marks:6},
+];
+QUESTIONS["6_2"] = [
+  {q:"Identify the three stores in the Multi-Store Model of memory.", a:"Sensory register, short-term memory (STM), long-term memory (LTM) — all three for 1 mark.", marks:1},
+  {q:"Describe the capacity and duration of short-term memory.", a:"Capacity: 7 (+/−2) items (1 mark). Duration: up to 18–30 seconds without rehearsal (1 mark).", marks:2},
+  {q:"Evaluate the Multi-Store Model.", a:"Strength: primacy and recency effects support separate STM/LTM (1 mark). Weakness: treats STM as single store but Working Memory Model shows it's more complex (1 mark). Weakness: rehearsal alone doesn't guarantee transfer (1 mark). Max 6 marks.", marks:6},
+];
+QUESTIONS["6_3"] = [
+  {q:"Explain the difference between sensation and perception.", a:"Sensation: detecting raw sensory information from environment (1 mark). Perception: interpreting and making sense of that information (1 mark).", marks:2},
+  {q:"Evaluate Gregory's Constructivist Theory of Perception.", a:"Strength: explains visual illusions (1 mark); research supports prior experience influencing perception (1 mark). Weakness: over-reliance on artificial illusions (1 mark); cannot explain novel object perception (1 mark). Gibson's theory challenges it (1 mark). Max 6 marks.", marks:6},
+];
+QUESTIONS["6_4"] = [
+  {q:"Explain Vygotsky's Zone of Proximal Development (ZPD).", a:"Gap between what child can do alone and what they can do with guidance (1 mark); tasks in ZPD completed with scaffolding from more knowledgeable other (1 mark).", marks:2},
+  {q:"Discuss the nature-nurture debate in child development.", a:"Nature: innate biological factors — e.g. Bowlby's attachment theory (1 mark). Nurture: environmental influences — e.g. Bandura's social learning (1 mark). Most psychologists take interactionist view (1 mark). Max 6 marks.", marks:6},
+];
+QUESTIONS["6_5"] = [
+  {q:"Describe one strength and one weakness of questionnaires as a research method.", a:"Strength: collect large amounts of data quickly (1 mark); more generalisable (1 mark). Weakness: participants may give socially desirable answers (1 mark); reduces validity (1 mark).", marks:4},
+  {q:"What is meant by 'reliability' in psychological research?", a:"How consistent a study or measure is (1 mark); a reliable study produces same results if repeated under same conditions (1 mark).", marks:2},
+];
+QUESTIONS["7_0"] = [
+  {q:"Outline two Muslim beliefs about prophethood (risalah).", a:"Prophets chosen by Allah to deliver His message (1 mark); Muhammad is the final prophet and the Quran is the final revelation (1 mark).", marks:2},
+  {q:"'The Bible is the most important source of authority for Christians.' Evaluate this statement.", a:"Some agree: Bible is inspired word of God (1 mark); contains Jesus's teachings (1 mark). However: some value Church tradition/Pope (1 mark); others rely on conscience (1 mark); Bible needs interpretation for modern issues (1 mark). Max 6 marks.", marks:6},
+];
+QUESTIONS["7_1"] = [
+  {q:"Name two of the Five Pillars of Islam.", a:"Any two: Shahadah, Salah, Zakah, Sawm, Hajj (1 mark each).", marks:2},
+  {q:"Explain the significance of Hajj for Muslims.", a:"One of Five Pillars (1 mark); takes place in Makkah following actions of Ibrahim (1 mark); standing at Arafat symbolises Day of Judgement (1 mark); promotes equality — all wear ihram (1 mark).", marks:4},
+  {q:"'Pilgrimage is the most important act of worship.' Evaluate with reference to Islam.", a:"Agree: one of Five Pillars (1 mark); brings global ummah together (1 mark). Disagree: Salah performed five times daily (1 mark); Zakah addresses social justice (1 mark); Shahadah is foundation of all other pillars (1 mark). Max 6 marks.", marks:6},
+];
+QUESTIONS["7_2"] = [
+  {q:"What is meant by the 'sanctity of life'?", a:"The belief that life is sacred/God-given and should be protected (1 mark).", marks:1},
+  {q:"'Religious people should do more to protect the environment.' Evaluate with reference to religious teachings.", a:"Agree: stewardship/khalifah — humans are trustees of earth (1 mark); Genesis 2:15 — care for creation (1 mark); will be accountable to Allah (1 mark). Disagree: requires political/scientific solutions (1 mark); religious people already contribute (1 mark); some interpret dominion as right to use nature (1 mark).", marks:6},
+];
+QUESTIONS["7_3"] = [
+  {q:"What is meant by 'pacifism'?", a:"The belief that all violence and war is wrong and conflicts should be resolved peacefully (1 mark).", marks:1},
+  {q:"State two conditions of the Just War theory.", a:"Any two: declared by legitimate authority / just cause / last resort / proportional force / civilians not targeted / reasonable chance of success (1 mark each).", marks:2},
+  {q:"'It is never right to go to war.' Evaluate with reference to religious arguments.", a:"Agree: pacifist position — Jesus 'blessed are the peacemakers' (1 mark); war always causes civilian suffering (1 mark). Disagree: Just War theory permits war with strict conditions (1 mark); failing to act against injustice also wrong (1 mark); lesser jihad permitted in self-defence (1 mark). Max 6 marks.", marks:6},
+];
+QUESTIONS["7_4"] = [
+  {q:"State two aims of punishment.", a:"Any two: retribution, deterrence, reformation, protection of society, vindication of the law (1 mark each).", marks:2},
+  {q:"'Reformation is the most important aim of punishment.' Evaluate with reference to religious teachings.", a:"Agree: Jesus forgave sinners (1 mark); tawbah — repentance accepted by Allah (1 mark). Disagree: retribution gives justice to victims (1 mark); deterrence prevents future crime (1 mark); protection of public sometimes must come first (1 mark). Max 6 marks.", marks:6},
+];
+QUESTIONS["7_5"] = [
+  {q:"What is meant by 'prejudice'?", a:"An unfair or unreasonable opinion about someone without proper knowledge (1 mark).", marks:1},
+  {q:"Explain two religious teachings about equality.", a:"Imago Dei — all made in image of God (1 mark); St Paul 'neither Jew nor Gentile... all one in Christ Jesus' (1 mark). Muslim: Prophet Muhammad's final sermon — no Arab superior to non-Arab except through piety (1 mark); ummah emphasises equality before Allah (1 mark).", marks:4},
+  {q:"'Religious people have a duty to help the poor.' Evaluate with reference to religious teachings.", a:"Agree: Parable of Sheep and Goats (1 mark); Zakah is obligatory for Muslims (1 mark). Disagree: individuals also responsible for themselves (1 mark); systemic poverty requires political solutions (1 mark). Most believers agree they have moral duty to address injustice (1 mark). Max 6 marks.", marks:6},
+];
+QUESTIONS["8_0"] = [
+  {q:"State the function of red blood cells.", a:"Carry oxygen from lungs to body tissues (1 mark).", marks:2},
+  {q:"Describe the pathway of blood through the heart starting from the vena cava.", a:"Vena cava → right atrium (1 mark) → right ventricle (1 mark) → pulmonary artery → lungs → pulmonary vein → left atrium → left ventricle → aorta (1 mark). Max 4 marks.", marks:4},
+  {q:"Explain how alveoli allow efficient gas exchange.", a:"Large surface area (1 mark); thin walls — one cell thick (1 mark); short diffusion distance (1 mark); rich blood supply maintains concentration gradient (1 mark). Max 6 marks.", marks:6},
+];
+QUESTIONS["8_1"] = [
+  {q:"Identify the class of lever at the elbow during a bicep curl.", a:"Third class lever (1 mark). Fulcrum = elbow (1 mark). Effort = biceps (1 mark). Load = weight in hand (1 mark).", marks:4},
+  {q:"Explain why a second class lever has high mechanical advantage. Give a sporting example.", a:"Load between fulcrum and effort (1 mark); effort arm longer than load arm (1 mark); smaller effort can move larger load (1 mark). Example: calf raise (1 mark).", marks:4},
+];
+QUESTIONS["8_2"] = [
+  {q:"Describe the FITT principle for a runner improving cardiovascular endurance.", a:"Frequency — increase sessions per week (1 mark); Intensity — increase pace/hills (1 mark); Time — increase duration (1 mark); Type — continuous/fartlek training (1 mark).", marks:4},
+  {q:"Evaluate continuous training vs interval training for a footballer.", a:"Continuous: improves aerobic fitness (1 mark) but doesn't replicate stop-start nature of football (1 mark). Interval: replicates game demands (1 mark); improves both aerobic and anaerobic fitness (1 mark). Conclusion: interval more suitable because football is stop-start (1 mark). Max 6 marks.", marks:6},
+];
+QUESTIONS["8_3"] = [
+  {q:"Define intrinsic motivation.", a:"Motivation from within / internal drive such as personal satisfaction or enjoyment (1 mark).", marks:2},
+  {q:"Explain how mental rehearsal improves performance.", a:"Going through movement in mind without physically performing (1 mark); builds confidence, reduces anxiety (1 mark); creates mental image of success (1 mark); reinforces correct movement patterns / muscle memory (1 mark).", marks:4},
+];
+QUESTIONS["8_4"] = [
+  {q:"Explain the 'golden triangle' in sport.", a:"Relationship between sport, sponsorship/business, and media (1 mark); sport benefits from funding and exposure (1 mark); business benefits from advertising (1 mark); media benefits from broadcasting rights and audiences (1 mark).", marks:4},
+  {q:"Evaluate the impact of commercialisation on a professional sport of your choice.", a:"Positive: increased funding for facilities/grassroots (1 mark); higher performer wages (1 mark); greater coverage increases participation (1 mark). Negative: scheduling dictated by TV (1 mark); smaller sports receive less funding (1 mark); loss of sporting values (1 mark). Max 6 marks.", marks:6},
+];
+QUESTIONS["8_5"] = [
+  {q:"State two mental health benefits of regular exercise.", a:"Any two: reduced stress/anxiety (1 mark); improved self-esteem (1 mark); improved mood (1 mark); reduced risk of depression (1 mark).", marks:2},
+  {q:"Discuss the dietary requirements before, during and after a marathon.", a:"Before: carb-loading to maximise glycogen (1 mark); adequate hydration (1 mark). During: water/isotonic drinks (1 mark); energy gels to maintain blood glucose (1 mark). After: protein to repair muscle (1 mark); carbohydrates to replenish glycogen (1 mark).", marks:6},
+];
+QUESTIONS["8_6"] = [
+  {q:"Explain why it is important to analyse your own performance.", a:"Identify strengths to maintain (1 mark); identify weaknesses to target in training (1 mark); set goals based on evidence (1 mark); monitor progress over time (1 mark).", marks:4},
+  {q:"Describe how a netball player could carry out a full analysis, create an action plan, and evaluate progress over six weeks.", a:"Analyse using video/observation to identify strengths and weaknesses (1 mark); use fitness tests to gather baseline data (1 mark); create SMART targets from weaknesses (1 mark); design training using appropriate methods (1 mark); re-test after six weeks and compare (1 mark); reflect and adjust plan (1 mark).", marks:6},
+];
+
+// ═══════════════════════════════════════════════════════
+//  QUESTION MODAL
+// ═══════════════════════════════════════════════════════
+let currentQSet = [], currentQIndex = 0, currentTopicKey = '', reviewMode = false;
+
+function openQuestions(ci, ti) {
+  const key = `${ci}_${ti}`;
+  currentTopicKey = key;
+  currentQSet = QUESTIONS[key] || [];
+  if (!currentQSet.length) { showToast('Questions coming soon for this topic'); return; }
+  currentQIndex = 0;
+  reviewMode = false;
+  renderQuestion();
+  document.getElementById('questionModal').classList.add('open');
+}
+
+function isReviewWorthy(qKey) {
+  const result = (state.questionResults || {})[qKey];
+  const conf = (state.confidence || {})[qKey];
+  if (result === 'missed') return true;
+  if (result === 'nearly') return true;
+  // felt shaky before answering, even if marked correct — still needs another pass
+  if ((conf === 'unsure' || conf === 'noidea') && result === 'got') return true;
+  return false;
+}
+
+function openReviewQuestions() {
+  currentQSet = [];
+  currentTopicKey = '_review';
+  reviewMode = true;
+  const allKeys = new Set([
+    ...Object.keys(state.questionResults || {}),
+    ...Object.keys(state.confidence || {})
+  ]);
+  allKeys.forEach(qKey => {
+    if (isReviewWorthy(qKey)) {
+      const parts = qKey.split('_');
+      const ci = parseInt(parts[0]), ti = parseInt(parts[1]), qi = parseInt(parts[2]);
+      const questions = QUESTIONS[`${ci}_${ti}`];
+      if (questions && questions[qi]) {
+        currentQSet.push({ ...questions[qi], _key: qKey, _ci: ci, _ti: ti });
+      }
+    }
+  });
+  if (!currentQSet.length) { showToast('No flagged questions to review'); return; }
+  currentQIndex = 0;
+  renderQuestion();
+  document.getElementById('questionModal').classList.add('open');
+}
+
+function renderQuestion() {
+  const q = currentQSet[currentQIndex];
+  if (reviewMode) {
+    document.getElementById('qSubject').textContent = CHECKLISTS[q._ci].subject;
+    document.getElementById('qTopic').textContent = CHECKLISTS[q._ci].topics[q._ti];
+  } else {
+    const ci = parseInt(currentTopicKey.split('_')[0]);
+    const ti = parseInt(currentTopicKey.split('_')[1]);
+    document.getElementById('qSubject').textContent = CHECKLISTS[ci].subject;
+    document.getElementById('qTopic').textContent = CHECKLISTS[ci].topics[ti];
+  }
+  document.getElementById('qProgress').textContent = `${currentQIndex + 1} / ${currentQSet.length}`;
+  document.getElementById('qText').textContent = q.q;
+  document.getElementById('qMarks').textContent = q.marks ? `[${q.marks} mark${q.marks > 1 ? 's' : ''}]` : '';
+  document.getElementById('qAnswer').style.display = 'none';
+  document.getElementById('qSelfMark').style.display = 'none';
+  document.getElementById('qConfidenceNudge').style.display = 'none';
+  document.getElementById('qActions').style.display = '';
+}
+
+function showAnswer(confidence) {
+  const q = currentQSet[currentQIndex];
+  document.getElementById('qAnswerText').textContent = q.a;
+  // store pre-answer confidence for this question
+  if (!state.confidence) state.confidence = {};
+  const cKey = reviewMode ? currentQSet[currentQIndex]._key : `${currentTopicKey}_${currentQIndex}`;
+  state.confidence[cKey] = confidence;
+  // show confidence comparison nudge
+  const nudges = {
+    sure: { text: "You felt sure — let's see how it matches up.", color: 'var(--teal)' },
+    unsure: { text: "You felt unsure — that's fine. Read it carefully and see what you had right.", color: 'var(--yellow)' },
+    noidea: { text: "No idea is fine. Read it now and it'll stick better than if you'd just re-read your notes.", color: 'var(--orange)' }
+  };
+  const nudge = nudges[confidence] || nudges.unsure;
+  const nudgeEl = document.getElementById('qConfidenceNudge');
+  nudgeEl.textContent = nudge.text;
+  nudgeEl.style.borderColor = nudge.color;
+  nudgeEl.style.color = nudge.color;
+  nudgeEl.style.display = 'block';
+  document.getElementById('qAnswer').style.display = 'block';
+  document.getElementById('qActions').style.display = 'none';
+  document.getElementById('qSelfMark').style.display = 'block';
+}
+
+function selfMark(result) {
+  if (!state.questionResults) state.questionResults = {};
+  let qKey;
+  if (reviewMode) {
+    qKey = currentQSet[currentQIndex]._key;
+  } else {
+    qKey = `${currentTopicKey}_${currentQIndex}`;
+  }
+  state.questionResults[qKey] = result;
+  saveState();
+  if (currentQIndex < currentQSet.length - 1) {
+    currentQIndex++;
+    renderQuestion();
+  } else {
+    closeQuestions();
+    buildChecklists();
+  }
+}
+
+function closeQuestions() {
+  document.getElementById('questionModal').classList.remove('open');
+}
+
+// ═══════════════════════════════════════════════════════
+//  TOPIC CHECKLISTS
+// ═══════════════════════════════════════════════════════
+function getTopicStatus(ci, ti) {
+  const key = `${ci}_${ti}`;
+  const questions = QUESTIONS[key] || [];
+  if (!questions.length) return { status:'none', got:0, nearly:0, missed:0, total:0, answered:0 };
+  let got = 0, nearly = 0, missed = 0;
+  questions.forEach((_, qi) => {
+    const r = (state.questionResults || {})[`${key}_${qi}`];
+    if (r === 'got') got++;
+    else if (r === 'nearly') nearly++;
+    else if (r === 'missed') missed++;
+  });
+  const answered = got + nearly + missed;
+  const status = got === questions.length ? 'mastered' : missed > 0 ? 'missed' : nearly > 0 ? 'nearly' : answered > 0 ? 'started' : 'new';
+  return { status, got, nearly, missed, total: questions.length, answered };
+}
+
+function buildChecklists() {
+  const container = document.getElementById('checklistContent');
+  container.innerHTML = '';
+  // count all review-worthy questions using the same logic as openReviewQuestions
+  const allKeys = new Set([
+    ...Object.keys(state.questionResults || {}),
+    ...Object.keys(state.confidence || {})
+  ]);
+  let flaggedCount = 0;
+  allKeys.forEach(qKey => { if (isReviewWorthy(qKey)) flaggedCount++; });
+  const reviewWrap = document.getElementById('reviewFlaggedWrap');
+  if (flaggedCount > 0) {
+    reviewWrap.innerHTML = `<button class="review-btn" onclick="openReviewQuestions()">⚑ Needs another go — ${flaggedCount} question${flaggedCount > 1 ? 's' : ''} (missed / nearly / unsure)</button>`;
+  } else {
+    reviewWrap.innerHTML = '';
+  }
+  CHECKLISTS.forEach((cl, ci) => {
+    let totalQ = 0, gotQ = 0;
+    cl.topics.forEach((_, ti) => {
+      const s = getTopicStatus(ci, ti);
+      totalQ += s.total;
+      gotQ += s.got;
+    });
+    const pct = totalQ ? Math.round((gotQ / totalQ) * 100) : 0;
+    const div = document.createElement('div');
+    div.className = 'subject-checklist';
+    div.style.borderLeft = `3px solid ${cl.color}`;
+    let topicsHTML = cl.topics.map((t, ti) => {
+      const s = getTopicStatus(ci, ti);
+      const hasQuestions = s.total > 0;
+      const statusClass = s.status === 'mastered' ? 'mastered' : s.status === 'missed' ? 'missed' : s.status === 'nearly' ? 'nearly' : s.status === 'started' ? 'started' : '';
+      const statusIcon = s.status === 'mastered' ? '✓' : s.status === 'missed' ? '✗' : s.status === 'nearly' ? '~' : s.status === 'started' ? '·' : '';
+      const countText = hasQuestions ? `${s.got}/${s.total}` : '';
+      return `<div class="topic-item" onclick="openQuestions(${ci},${ti})">
+        <div class="topic-status ${statusClass}">${statusIcon}</div>
+        <div class="topic-text">${t}</div>
+        <div class="topic-count">${countText}</div>
+      </div>`;
+    }).join('');
+    div.innerHTML = `
+      <h3 style="color:${cl.color}">${cl.subject} <span style="font-size:0.65rem;color:var(--text3);font-weight:700">${cl.board}</span></h3>
+      <div class="checklist-progress">${gotQ}/${totalQ} questions mastered · ${pct}%</div>
+      <div class="progress-bar-wrap" style="margin-bottom:10px"><div class="progress-bar-fill" style="width:${pct}%;background:${cl.color}"></div></div>
+      ${topicsHTML}
+    `;
+    container.appendChild(div);
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+//  IRLEN
+// ═══════════════════════════════════════════════════════
+function toggleIrlen() {
+  state.irlenOn = !state.irlenOn;
+  applyIrlen();
+  saveState();
+}
+function updateIrlenIntensity(val) {
+  state.irlenIntensity = parseInt(val);
+  applyIrlen();
+  saveState();
+}
+function applyIrlen() {
+  const overlay = document.getElementById('irlenOverlay');
+  const btn = document.getElementById('irlenToggle');
+  const slider = document.getElementById('irlenSliderWrap');
+  const intensityInput = document.getElementById('irlenIntensity');
+  if (state.irlenOn) {
+    const intensity = (state.irlenIntensity || 15) / 100;
+    overlay.style.display = 'block';
+    overlay.style.background = `rgba(128, 0, 255, ${intensity})`;
+    btn.classList.add('active');
+    slider.style.display = 'block';
+    intensityInput.value = state.irlenIntensity;
+  } else {
+    overlay.style.display = 'none';
+    btn.classList.remove('active');
+    slider.style.display = 'none';
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  KEYBOARD
+// ═══════════════════════════════════════════════════════
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeTimer(); closeQuestions(); }
+});
+
+// ═══════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════
+buildHome();
+buildTimetable();
+buildExamTimeline();
+buildPastPapers();
+buildChecklists();
+applyIrlen();
+</script>
+<!-- ═══ BOTTOM NAV ═══ -->
+<nav class="bottom-nav" id="bottomNav">
+  <button class="bottom-nav-btn active" onclick="showPage('today',event)" data-page="today">
+    <span class="bottom-nav-emoji">🏠</span>
+    <span class="bottom-nav-label">Today</span>
+  </button>
+  <button class="bottom-nav-btn" onclick="showPage('topics',event)" data-page="topics">
+    <span class="bottom-nav-emoji">✏️</span>
+    <span class="bottom-nav-label">Practice</span>
+  </button>
+  <button class="bottom-nav-btn" onclick="showPage('exams',event)" data-page="exams">
+    <span class="bottom-nav-emoji">📅</span>
+    <span class="bottom-nav-label">Exams</span>
+  </button>
+  <button class="bottom-nav-btn" onclick="showPage('plan',event)" data-page="plan">
+    <span class="bottom-nav-emoji">🗓️</span>
+    <span class="bottom-nav-label">Plan</span>
+  </button>
+  <button class="bottom-nav-btn" onclick="showPage('irlen',event)" data-page="irlen">
+    <span class="bottom-nav-emoji">👁️</span>
+    <span class="bottom-nav-label">Irlen</span>
+  </button>
+  <button class="bottom-nav-btn" onclick="showPage('why',event)" data-page="why">
+    <span class="bottom-nav-emoji">🧠</span>
+    <span class="bottom-nav-label">Why</span>
+  </button>
+</nav>
+
+</body>
+</html>
